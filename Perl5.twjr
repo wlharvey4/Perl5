@@ -1,0 +1,1350 @@
+\input texinfo   @c -*- mode: texinfo -*-
+
+@c FILE    Perl5.twjr
+@c VERSION 0.1.0
+@c DATE    2018-11-12T13:30
+@c AUTHOR  wlharvey4
+
+@c *****************************************************************************
+@c %**start of header
+
+@setfilename  Perl5.info
+@settitle     About Perl5
+
+@c %**end of header
+@c *****************************************************************************
+
+@c -----------------------------------------------------------------------------
+@set TITLE      All About Perl5
+@set SHORTTITLE Perl5
+@set AUTHOR WLHarvery4
+@set EDITION 0.1
+@set UPDATE-MONTH NOVEMBER, 2018 @c goes in the subtitle
+@set COPYRIGHT-YEAR 2018
+@set COPYRIGHT-HOLDER WLHarvey4
+@set ADDRESS1 Address Line 1
+@set ADDRESS2 Address Line 2
+@c -----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c BIBCITE MACROS
+@c *****************************************************************************
+
+@c need to load macros before header
+@macro mybibsetrefnode{node}
+@set mybibrefnode \node\
+@end macro
+
+@macro mybibnode{}
+@value{mybibrefnode}
+@end macro
+
+@macro mybibusetable{node}
+@set mybibtable true
+@ifset mybiblist
+@clear mybiblist
+@end ifset
+@mybibsetrefnode{\node\}
+@end macro
+
+@macro mybibuselist{node}
+@set mybiblist true
+@ifset mybibtable
+@clear mybibtable
+@end ifset
+@mybibsetrefnode{\node\}
+@end macro
+
+@macro mybibcite{ref}
+@inlineifclear{mybibrefnode, @mybibmakeref{mybibsetrefnode was not used, \ref\}}
+@ifset mybibrefnode
+@mybibmakeref{@mybibnode{}, \ref\}
+@end ifset
+
+@end macro
+
+@macro mybibmakeref{node, ref}
+(See item @cite{\ref\} in @ref{\ref\,,\node\}.)
+@end macro
+
+@macro mybibitem{ref}
+@ifclear mybiblist
+@ifclear mybibtable
+@set mybiblist true
+@end ifclear
+@end ifclear
+
+@ifset mybiblist
+@item
+@anchor{\ref\}[\ref\]
+@end ifset
+
+@ifset mybibtable
+@item @anchor{\ref\}\ref\ ---
+@end ifset
+
+@end macro
+
+@mybibusetable{Bibliography}
+
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c FINALOUT / DRAFT / FORPRINT
+@c *****************************************************************************
+
+@set      DRAFT @i{DRAFT} @c when set, print DRAFT in heading
+@c @clear DRAFT  @c when clear, don't print DRAFT in heading
+@clear  FINALOUT @c when clear, show black boxes for overfull lines
+@c @set FINALOUT @c when set, don't show black boxes for overfull lines
+@clear  FORPRINT @c when clear, PDF output is for viewing, not printing
+@c @set FORPRINT @c when set, PDF output is for printing, not viewing
+
+@c -----------------------------------------------------------------------------
+@ifclear FORPRINT
+@pdflinkcolor
+@urllinkcolor
+@hideurls
+@end ifclear
+
+@iftex
+@ifset FINALOUT @c don't show black boxes for final printout
+@finalout
+@end ifset
+@end iftex
+
+@c Uncomment this for the release.  Leaving it off saves paper
+@c during editing and review.
+@ifset FORPRINT
+@ifset FINALOUT
+@c @setchapternewpage odd
+@end ifset
+@end ifset
+
+@c -----------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c SECTIONING / INDICES
+@c *****************************************************************************
+
+@iftex
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end iftex
+@ifhtml
+@set DOCUMENT Web page
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifhtml
+@ifinfo
+@set DOCUMENT Info file
+@set CHAPTER major node
+@set APPENDIX major node
+@set SECTION minor node
+@set SUBSECTION node
+@end ifinfo
+@ifdocbook
+@set DOCUMENT book
+@set CHAPTER chapter
+@set APPENDIX appendix
+@set SECTION section
+@set SUBSECTION subsection
+@end ifdocbook
+
+
+@c merge the function and variable indexes into the concept index
+@c do so without the code font, and in the index entries do the
+@c font management ourselves.  Also merge in the chunk definition
+@c and reference entries, which jrweave creates for us.
+@ifnothtml
+@synindex fn cp
+@synindex vr cp
+@synindex cd cp
+@synindex cr cp
+@end ifnothtml
+
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c SPECIAL TEXIWEBJR COMMANDS
+@c *****************************************************************************
+
+@c Change how xref titles are quoted.
+@dquotexrefs
+@c And let braces in index entries work.
+@allowindexbraces
+
+@c some special symbols
+@ifnottex
+@macro ii{text}
+@i{\text\}
+@end macro
+@end ifnottex
+
+
+@c -----------------------------------------------------------------------------
+@c INITIAL_SETUP
+@c -----------------------------------------------------------------------------
+
+@c The initial_setup code runs as a script in a BEGIN section of AWK during the
+@c tangling  phase before  any files  are  extracted. Here  create a  directory
+@c structure for project  files, plus any other initialization  that might need
+@c to be done. Files are moved into directories in a @post_create command.
+
+@initial_setup
+printf "${YELLOW}In initial_setup...${BLUEBOLD}\n"
+
+ROOT=${PWD}
+FILES="files"
+SUBDIRS="src doc t bin"
+
+for subdir in ${SUBDIRS}
+do
+    ! [ -d ${ROOT}/${FILES}/${subdir} ] && {
+       mkdir -vp ${ROOT}/${FILES}/${subdir} && \
+       printf "${BLUEBOLD}created directory ${PURPLEBOLD}."$(basename ${ROOT})"/${FILES}/${subdir}${CLEAR}\n" || \
+      printf "${RED}failed to create directory ${PURPLEBOLD}${ROOT}/${FILES}/${subdir}${CLEAR}\n"
+    } || \
+      printf "${BLUEBOLD}file ${PURPLEBOLD}."$(basename ${ROOT})"/${FILES}/${subdir} exists${CLEAR}\n"
+done
+
+printf "${YELLOW}Looking for ${CYAN}git repo...${CLEAR}"
+if ! [ -e ./.git ]
+then
+        printf "${BLUE}initializing git repo${PURPLE}\n"
+        git init
+        [ -e ./.git ] && \
+          printf "${GREEN}git initialized.${CLEAR}\n" || \
+          printf "${RED}failed to initialize git.${CLEAR}\n"
+else
+        printf "${GREEN}found ${PURPLEBOLD}.git.${CLEAR}\n"
+fi
+
+printf "${YELLOW}looking for ${CYAN}.gitignore...${CLEAR}"
+if ! [ -e ./.gitignore ]
+then
+        printf "${BLUE}creating...${CLEAR}"
+        echo '.lodestone' > ./.gitignore
+        [ -e ./.gitignore ] && \
+          printf "${GREEN}created${PURPLEBOLD}.gitignore${CLEAR}\n" || \
+          printf "${RED}failed${CLEAR}\n"
+else
+        printf "${GREEN}found ${PURPLEBOLD}.gitignore.${GREEN}\n"
+fi
+
+printf "${GREEN}initial setup done.${CLEAR}\n"
+
+@end initial_setup
+@c <------------------------------------->
+
+@c END Special TexiwebJr Commands
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN COPYING
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+@copying
+
+@c <------------------------------------->
+@docbook
+<para>Published by:</para>
+
+<literallayout class="normal">Full Name
+Address Line 1
+Address Line 2
+etc.
+Email: <email>user@@example.com</email>
+URL: <ulink url="http://www.example.com/">http://www.example.com/</ulink></literallayout>
+
+<literallayout class="normal">Copyright &copy; YYYY, YYYY
+Full name here
+All Rights Reserved.</literallayout>
+@end docbook
+@c <------------------------------------->
+
+
+@c <------------------------------------->
+@ifnotdocbook
+Copyright @copyright{} @value{COPYRIGHT-YEAR} @*
+@value{AUTHOR} @*
+All Rights Reserved.
+@end ifnotdocbook
+@c <------------------------------------->
+
+
+@sp 1
+The Perl program is copyright @value{COPYRIGHT-YEAR}
+@copyright{}  by @value{AUTHOR}. It is published under
+the conditions of the GNU General Public License, version 3.
+@sp 2
+This is Edition @value{EDITION} of @cite{@value{TITLE}}.
+
+
+@end copying
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN TITLEPAGE
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+@titlepage
+
+@c Uncomment this if it's ever printed as a real book(let).
+@c @shorttitlepage @value{SHORTTITLE}
+
+@title @value{TITLE}
+@subtitle @value{UPDATE-MONTH}
+@author @value{AUTHOR} @c Full Name here
+
+@ifnotdocbook
+@c Include the Distribution inside the titlepage environment so
+@c that headings are turned off.  Headings on and off do not work.
+
+@page
+@vskip 0pt plus 1filll
+Published by:
+@sp 1
+@value{AUTHOR} @*
+@value{ADDRESS1} @*
+@value{ADDRESS2} @*
+@* @c etc.
+Email: @EMAIL{user@@example.com,user AT example.com} @*
+URL: @url{http://www.example.com/} @*
+
+@insertcopying
+@end ifnotdocbook
+@c <------------------------------------->
+
+
+@end titlepage
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c =============================================================================
+@c HEADINGS SETTINGS
+@c =============================================================================
+
+@iftex
+@headings off
+@evenheading @thispage @| @value{DRAFT} @| @strong{@value{SHORTTITLE}}
+@oddheading  @strong{@thischapter} @| @value{DRAFT} @| @thispage
+@end iftex
+
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN TOP
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+@ifnottex
+@ifnotdocbook
+@ifnotxml
+
+@c =============================================================================
+@node Top
+@top Top of the Perl
+@c =============================================================================
+
+This file documents Perl, a program that documents Perl.
+
+@insertcopying
+@end ifnotxml
+@end ifnotdocbook
+@end ifnottex
+
+
+
+
+@c -----------------------------------------------------------------------------
+@c                                  MENU & TOC
+
+@c <------------------------------------->
+@c                 MENU
+
+@menu
+
+@detailmenu
+
+@end detailmenu
+@end menu
+@c <------------------------------------->
+
+
+
+
+@c <------------------------------------->
+@c                 TOC
+
+@c @summarycontents
+@contents
+
+@c <------------------------------------->
+
+@c -----------------------------------------------------------------------------
+
+
+@c END MENU & TOC
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@part Front Matter
+
+@c BEGIN FRONT-MATTER
+@c --Forward
+@c --Preface
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                                  FORWARD
+
+@c @node Foreword
+@c @unnumbered Foreword
+
+
+@c END Forward
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                                  PREFACE
+
+@node Preface
+@unnumbered Preface
+
+Text here.
+
+@menu
+* Audience::                    Who should read this @value{DOCUMENT}.
+* Overview::                    An overview of the @value{DOCUMENT}.
+* Conventions::                 Typographical conventions.
+* Acknowledgements::            Acknowledgements.
+@end menu
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Audience
+@unnumberedsec Intended Audience
+
+Audience text here.
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Overview
+@unnumberedsec What Is Covered
+
+Overview text and chapter by chapter description here.
+
+
+@c .....................................
+
+@node The Readme
+@unnumberedsubsec The Readme
+@cindex readme
+
+@(README.md@)=
+# Perl5
+
+## About This Source File
+
+This document (`Perl5.twjr`) is a *literate* source document. It is designed to
+produce an `Info` file (best read from within Emacs, but there is a stand-alone
+Info reader  that can be used),  a `Pdf` document (generated  from LaTeX source
+code by PDFTeX), an `HTML` web  site, `Docbook` source code, an `XML` document,
+and a plain  text document. In addition.  it also produces working  code in any
+language (so long as your system  contains the infrastructure to run the code).
+For example,  this `README` file  was drafted  within this source  document and
+extracted  as a  separate file,  as was  also the  `Makefile`. This  *literate*
+document's features are targeted via a custom `Makefile` that is also a part of
+this document, and  extracted as a separate  file, and is dynamic  in the sense
+that if you  update it, you can produce  a new version with a simple  call to a
+`make` target.  It is  designed to  be able  to produce  any number  of working
+software  packages  of  any  language  contained at  any  number  of  different
+locations on your system, all with  a single or, alternatively, multiple `make`
+calls, depending on the granularity you need.
+
+The Github  repository contains this  source document,  a Makefile that  can be
+used  to work  with the  project, as  well as  a `Texinfo`  file that  has been
+generated from  this `Twjr` file,  this README,  and a `.gitignore`  file. Most
+computer systems have or can easily get the `make`, and `texinfo` programs that
+are needed to  process the `Texinfo` file into the  various end documents, such
+as `Info`,  `Pdf`, `HTML`, etc. Your  system will need, in  addition to `make`,
+and `texinfo`, Gnu  AWK (`gawk`), and TexiwebJr to make  changes to this source
+document and  process it  into a  `Texinfo` file and  extract its  programs and
+files.  Your system  should also  have  the equivalent  of Bash  version 4,  as
+version 4  has some parameter capabilities  that earlier versions do  not. Note
+that most  versions of Mac OS  have version 3  of Bash installed as  a default.
+Version 4 can be added using Homebrew or MacPorts very easily. In the past, Mac
+OS has  also shipped with a  version of `texinfo`  that is below 6.5.  You will
+also need to update `texinfo` to at least 6.5 if that is the case.
+
+## How It Works
+
+## Resources
+
+* [TexiwebJr](https://github.com/arnoldrobbins/texiwebjr)
+* [Texinfo](https://www.gnu.org/software/texinfo/)
+* [Gnu AWK (gawk)](https://www.gnu.org/software/gawk/)
+* [Gnu Bash](https://www.gnu.org/software/bash/)
+* [TeX Live](https://www.tug.org/texlive/)
+
+@
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Conventions
+@unnumberedsec Typographical Conventions
+
+@c Copied mostly verbatim from the gawk manual.
+
+@cindex Texinfo document formatting language
+This @value{DOCUMENT} is written in an enhanced version of
+@uref{http://www.gnu.org/software/texinfo/, Texinfo},
+the GNU documentation formatting language.
+A single Texinfo source file is used to produce both the printed and online
+versions of a program's documentation.
+@ifnotinfo
+Because of this, the typographical conventions
+are slightly different than in other books you may have read.
+@end ifnotinfo
+
+Examples you would type at the command-line are preceded by the common
+shell primary and secondary prompts, @samp{$} and @samp{>}.  Input that
+you type is shown @kbd{like this}.  Output from the command is preceded
+by the glyph ``@print{}''.  This typically represents the command's
+standard output.  Error messages, and other output on the command's
+standard error, are preceded by the glyph ``@error{}''.  For example:
+
+@example
+$ @kbd{echo hi on stdout}
+@print{} hi on stdout
+$ @kbd{echo hello on stderr 1>&2}
+@error{} hello on stderr
+@end example
+
+@ifnotinfo
+In the text, command names appear in @code{this font}, while code segments
+appear in the same font and quoted, @samp{like this}.  Options look
+like this: @option{-f}.  Some things are emphasized @emph{like this},
+and if a point needs to be made strongly, it is done @strong{like this}.
+The first occurrence of a new term is usually its @dfn{definition} and
+appears in the same font as the previous occurrence of ``definition''
+in this sentence.  Finally, file names are indicated like this:
+@file{/path/to/our/file}.
+@end ifnotinfo
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Acknowledgements
+@unnumberedsec Acknowledgements
+
+Acknowledgements go here.
+
+
+@c END Preface
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                            CHAPTER Introduction
+
+@node Introduction
+@chapter Introduction
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+
+@node Perlbrew
+@chapter PerlBrew
+@cindex perlbrew
+
+@url{https://perlbrew.pl/, Perlbrew Home}
+
+@noindent
+@url{https://metacpan.org/pod/App::perlbrew, Perlbrew MetaCPAN}
+
+@noindent
+@url{https://github.com/gugod/App-perlbrew, Perlbrew on Github}
+
+@heading About
+
+@command{perlbrew}  is an  admin-free perl  installation management  tool.  The
+latest version is  0.84.  @command{perlbrew} is a tool to  manage multiple perl
+installations  in your  @file{$HOME} directory.   They are  completely isolated
+perl universes.  This approach has many benefits:
+
+@itemize
+@item
+No need to run sudo to install CPAN modules, any more.
+@item
+Try the monthly released new perls.
+@item
+Learn new language features.
+@item
+Test your production code against different perl versions.
+@item
+Leave vendor perl (the one that comes with OS) alone
+@item
+Hacking perl internals.
+@item
+Just to keep up with fashion.
+@end itemize
+
+While  the  default  is  good  enough,  you may  customize  it  to  install  to
+alternative  places,  or even  let  multiple  users  share the  whole  perlbrew
+environment.
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+@node Install Perlbrew
+@section Install Perlbrew
+@cindex install perlbrew
+@cindex perlbrew installation
+
+@heading Root Directory
+@cindex root directory
+@cindex perlbrew default root directory
+@cindex PERLBREW_ROOT
+
+The default @command{perlbrew} root directory is @file{~/perl5/perlbrew}, which
+can be changed  by setting @env{PERLBREW_ROOT} environment  variable before the
+installation  and  initialization.   For more  advanced  installation  process,
+please   read   the   @url{http://metacpan.org/module/App::perlbrew,   perlbrew
+document}.
+
+@heading Download
+
+Use one of these commands:
+
+@example
+\curl -L https://install.perlbrew.pl | bash
+
+# Linux
+\wget -O - https://install.perlbrew.pl | bash
+
+# FreeBSD
+\fetch -o- https://install.perlbrew.pl | sh
+@end example
+
+@heading With @command{cpan}
+
+If you prefer to install with cpan, there are two steps:
+
+@enumerate
+@item
+@samp{sudo cpan App::perlbrew}
+@item
+@samp{perlbrew init}
+@end enumerate
+
+If  it  is installed  with  @command{cpan},  the @command{perlbrew}  executable
+should       be       installed      as       @file{/usr/bin/perlbrew}       or
+@file{/usr/local/bin/perlbrew}.   For all  users who  want to  use perlbrew,  a
+prior @command{perlbrew init} needs to be executed.
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+@node Using Perlbrew
+@section Using Perlbrew
+@cindex perlbrew, using
+
+
+
+
+
+
+
+
+@c<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+@c APPENDICES
+@c<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                              THE MAKEFILE
+
+@node The Makefile
+@appendix The Makefile
+@cindex makefile
+
+The @file{Makefile} has five initial top-level targets built in as defaults:
+
+@enumerate
+
+@item
+Variable Definitions
+
+@itemize
+@item
+FILE: the name of this source document, without extension
+@item
+ROOT: the  name of the  root directory, which  defaults to the  present working
+directory, $(PWD)
+@item
+FILES: the  name of  the root directory  for the files  created in  this source
+document, which defaults to @file{files}
+@item
+LODESTONE: a reference file to help @file{Makefile} determine when to recompile
+this source document or the @file{TEXI} file
+@end itemize
+
+@item
+The Default Target: @command{twjr}, described below
+
+@item
+The TWJR Targets
+
+@table @command
+@item twjrkeep
+@command{jrtangle jrweave info pdf html}
+@item twjr
+@command{twjrkeep dirclean}
+@item jrtangle
+@command{jrtangle $(FILE).twjr}
+@item newmakefile
+@command{jrtangle allclean}
+@end table
+
+@item
+The Clean Targets
+
+@enumerate
+@item
+Clean
+@item
+Dirclean
+@item
+Distclean
+@item
+Allclean
+@end enumerate
+
+@item
+The Applications Hook
+
+@end enumerate
+
+
+
+
+@(Makefile@)=
+# MAKEFILE FILE CHUNKS
+######################
+
+@<Makefile---Variable Definitions@>
+@<Makefile---Default Target@>
+@<Makefile---TWJR Targets@>
+@<Makefile---Clean Targets@>
+@<Makefile---Applications@>
+
+@
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+@node Makefile Variable Definitions
+@appendixsec Makefile Variable Definitions
+
+The @env{SHELL} variable is included because some shell commands depend upon
+Bash version 4, which is not native on my system.
+
+The @env{ROOT} variable is designed to allow you to to extract the source files
+(not the @acronym{TEXI}, @acronym{INFO}, @acronym{PDF} or @acronym{HTML} files,
+but  the  programs defined  inside  the  @acronym{TWJR}  file) to  a  directory
+structure outside of the your  ``present working directory'' (@env{PWD}) should
+that be something you want to do, i.e., for production purposes.
+
+The @code{FILE} variable  is the name of this source  @code{TWJR} file, without
+extension.
+
+The @code{FILES} variable is the name of  the root directory for the files that
+are extracted during the @emph{tangling} phase.  This directory goes underneath
+the @file{ROOT} directory.  Feel free to name this whatever you want.
+
+The @code{LODESTONE}  variable is an empty  reference file that is  used solely
+for its  modification time  to help  the Makefile  determine when  to recompile
+(i.e., @emph{tangle} and @emph{weave}) the  source @file{TWJR} file.  It should
+not be changed or otherwise touched (pun intended).
+
+@<Makefile---Variable Definitions@>=
+# VARIABLE DEFINITIONS
+######################
+LODESTONE := .lodestone
+README    := README.md
+GIT       := .git*
+
+SHELL := $$(which bash)
+
+FILE  := Perl5
+ROOT  := $(PWD)
+FILES := files
+
+@
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+@node Makefile Default Target
+@appendixsec Default Target
+@cindex default target
+
+The @code{default} target  extracts all source files and moves  them into their
+proper  directories,  and  processes  the   @code{TEXI}  source  file  into  an
+@code{INFO}  file, a  @code{PDF} document,  and an  @code{HTML} web  site. This
+process automatically updates the TEXI's nodes and sectioning commands prior to
+generating  the   INFO,  PDF,  and   HTML  documents.    What  used  to   be  a
+manually-intensive process is now completely  automated through a Makefile that
+is extracted from the @code{TWJR}  source.
+
+This  automated  process  depends   upon  the  programmer's  system  containing
+@file{GNU   AWK}  (for   the   primary  literate   programming  operations   of
+@emph{tangling}   and   @emph{weaving}@footnote{No  other   implementation   of
+@file{AWK}  will  work}),   @file{make}  (to  control  the   build  and  output
+processes@footnote{While I haven't tested it, just about any @file{make} should
+work}),  @file{Texinfo} of  at least  version 6.5  (for the  processing of  the
+@file{TEXI} output file), @file{makeinfo} (to produce the @file{INFO} file from
+the @file{TEXI}  file), and @file{Emacs}  (for the automatic updating  of nodes
+and sectioning  command@footnote{Again, while I  haven't tested it,  just about
+any @file{Emacs}  should work}).   With these  dependencies, everything  can be
+compiled with a single call to @command{make} with no argument:
+
+@example
+$ make
+@end example
+
+Individual files and documents can also be targeted with simple calls such as:
+
+@example
+$ make html
+
+$ make openhtml
+
+$ make pdf
+
+$ make openpdf
+
+$make info
+
+$ make openinfo
+
+$ make distclean
+
+$ make allclean
+@end example
+
+@noindent and so forth (just name a few).
+
+The target  @code{twjr} is  the default, and  does everything  explicitly.  The
+target @code{weave}  (or alternatively @code{texi})  will run just  the command
+@command{jrweave}  on the  @file{TWJR} file  to produce  the @file{TEXI}  file,
+which  is  directly  responsible  for  producing  the  output  files.   If  the
+@file{TWJR}  source  file has  been  modified,  then @command{maked}  will  run
+@command{jrtangle} first to update all source documents.
+
+@<Makefile---Default Target@>=
+# DEFAULT Target
+################
+.PHONY : TWJR JRTANGLE TANGLE JRWEAVE WEAVE TEXI INFO PDF HTML
+.PHONY : default twjr twjrkeep jrtangle tangle
+.PHONY : jrweave weave texi info pdf html newmakefile
+
+default : TWJR
+
+@
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+
+@node Makefile TWJR Targets
+@appendixsec TWJR Targets
+@cindex TWJR targets
+
+These targets are all related to processing the main source @acronym{TWJR} file
+in some  way. The @file{make} target  @command{twjr} is the default  target and
+runs each of the processes  @command{jrtangle} and @command{jrweave} to produce
+source files,  a @acronym{TEXI} file,  an @acronym{INFO} file,  a @acronym{PDF}
+document, and an @acronym{HTML} web site.  It only sources what is necessary as
+@file{make} is designed to do.  Note that at this time, @emph{weaving} includes
+automatic  menu and  node  updating  of the  @acronym{TEXI}  file,  so that  an
+@acronym{INFO} file  can also be  generated without needing to  manually update
+the  @acronym{TEXI} file  first  as used  to be  the  case. @file{make}  target
+@code{info}     runs     @command{makeinfo},     target     @code{pdf}     runs
+@command{pdftexi2dvi}, and target @code{html} runs @command{makeinfo --html}.
+
+The default @file{twjr} target deletes all extraneous build and log files prior
+to finishing.   If you want  to retain  the build and  log files, then  run the
+target @file{twjrkeep} instead.
+
+The  file  @file{.lodestone}   is  used  to  set  a  reference   time  for  the
+
+@acronym{TWJR} file,  so that  if the @acronym{TWJR}  file changes,  new source
+documents will be generated; otherwise, it  will simply be left alone. In other
+words, if @file{.lodestone}  is older than @file{.twjr},  then @file{.twjr} has
+been modified, and it should be @emph{tangled} and @emph{woven} first.  If it is
+newer, then @command{make} will not recompile.
+
+Should the @file{Makefile}  portion of the @file{TWJR} be modified,  then it is
+important to  obtain a fresh copy  of the @file{Makefile} prior  to running any
+target; therefore,  use the target  @command{make newmakefile} first,  then run
+any desired target.
+
+@<Makefile---TWJR Targets@>=
+# TWJR TARGETS
+##############
+
+# Process everything; don't remove any build or log files;
+twjrkeep : jrtangle jrweave info pdf html
+
+# Process everything; remove build files and logs.
+TWJR : twjr
+twjr : twjrkeep dirclean
+
+# JRTANGLE depends upon the LODESTONE and the ROOT/FILES directory;
+# if either is missing or out of date, then JRTANGLE will be run to
+# extract its files.
+JRTANGLE : TANGLE
+TANGLE   : jrtangle
+jrtangle : tangle
+tangle   : files $(LODESTONE)
+
+# Checks the relative time to determine if JRTANGLE should be rerun
+$(LODESTONE) : $(FILE).twjr
+	@printf "${YELLOW}Tangling $(FILE)...${CLEAR}\n"
+	@jrtangle $(FILE).twjr
+	@touch $(LODESTONE)
+	@printf "${GREEN}done tangling.${CLEAR}\n"
+
+# Checks for  the existence  of the ROOT/FILES  directory; extracts  files into
+# them if they don't  exist or are out of date; they must  be retouched if they
+# exist but  are out of date  because they will  not be remade or  updated when
+# files are extracted into them
+files : $(ROOT)/$(FILES)
+$(ROOT)/$(FILES) : $(FILE).twjr
+	@printf "${YELLOW}Creating files...${CLEAR}\n"
+	@touch $(FILE).twjr
+	@make $(LODESTONE)
+	@touch $(ROOT)/$(FILES)
+	@printf "${GREEN}done creating files.${CLEAR}\n"
+
+# Extracts the Makefile if necessary by tangling; everything else
+# is thereafter deleted
+newmakefile : $(LODESTONE) allclean
+
+# Extracts the TEXI, and updates the nodes and sections with a batch call to
+# Emacs; it depends upon TWJR
+JRWEAVE : WEAVE
+WEAVE   : TEXI
+TEXI    : jrweave
+jrweave : weave
+weave   : texi
+texi    : $(FILE).texi
+$(FILE).texi : $(FILE).twjr
+	@printf "${YELLOW}Weaving $(FILE)...${CLEAR}\n"
+	@jrweave $(FILE).twjr > $(FILE).texi
+	@printf "${GREEN}done weaving.${CLEAR}\n";
+	@printf "${YELLOW}updating $(FILE)'s menus and nodes...${CLEAR}\n"
+	@emacs --batch --eval '(progn (find-file "./$(FILE).texi" nil) \
+	  (texinfo-master-menu 1) (save-buffer 0))' 2> .batch.log
+	@printf "${GREEN}done updating.${CLEAR}\n"
+
+# Runs makeinfo on the TEXI file;
+# Opens the INFO file in Emacs
+INFO : info
+info : $(FILE).info
+$(FILE).info : $(FILE).texi
+	@printf "${YELLOW}Creating an INFO file...${CLEAR}\n"
+	@makeinfo $(FILE).texi
+	@printf "${GREEN}done${CLEAR}\n"
+openinfo : INFO
+	@printf "${YELLOW}Opening INFO in Emacs...${CLEAR}\n"
+	@emacsclient -s server --eval '(info "($(ROOT)/$(FILE).info)top")'
+	@printf "${GREEN}done${CLEAR}\n"
+
+# Runs pdftexi2dvi on the TEXI file;
+# Opens the PDF file
+PDF : pdf
+pdf : $(FILE).pdf
+$(FILE).pdf : $(FILE).texi
+	@printf "${YELLOW}Creating a PDF file...${CLEAR}\n"
+	@pdftexi2dvi --build=tidy --build-dir=build --quiet $(FILE).texi
+	@printf "${GREEN}done${CLEAR}\n"
+openpdf : PDF
+	@printf "${YELLOW}Opening PDF...${CLEAR}\n"
+	@open $(FILE).pdf
+	@printf "${GREEN}done${CLEAR}\n"
+
+# Runs makeinfo --html on the TEXI file;
+# Opens index.html in a browser
+HTML : html
+html : $(FILE)/index.html
+$(FILE)/index.html : $(FILE).texi
+	@printf "${YELLOW}Creating an HTML directory...${CLEAR}\n"
+	@makeinfo --html $(FILE).texi
+	@printf "${GREEN}done${CLEAR}\n"
+openhtml : HTML
+	@printf "${YELLOW}Opening INDEX.HTML in the browser...${CLEAR}\n"
+	@open $(FILE)/index.html
+	@printf "${GREEN}done${CLEAR}\n"
+
+@
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+@node Makefile Clean Targets
+@appendixsec Makefile Clean Targets
+@cindex Makefile clean targets
+
+The @command{clean} target removes  backup files. The @command{dirclean} target
+removes build  directories and log  files, but  not source files  (those inside
+@file{files} directory,  e.g., @file{bin/} and and  @file{src/}) and associated
+files and  programs inside  them.  The  @command{distclean} target  removes the
+@acronym{INFO}, @acronym{PDF},  @acronym{HTML}, and @acronym{source}  files and
+directories, leaving just  the @file{TWJR} file, the @file{TEXI}  file, and the
+@file{Makefile}.  Finally,  the  @command{allclean} target  removes  everything
+except the @acronym{TWJR} file and the @file{Makefile}.
+
+@<Makefile---Clean Targets@>=
+.PHONY : clean dirclean distclean worldclean allclean
+
+# remove backup files
+clean :
+	@printf "${WHITEBOLD}Cleaning...${CYAN}\n"
+	@rm -f *~ .*~ #*# #*.*#
+	@printf "${GREEN}done cleaning.${CLEAR}\n"
+
+# after clean:  remove all  build and miscellaneous  files, leaving  only TWJR,
+# TEXI,  INFO, HTML,  PDF,  Makefile,  README, .git,  .gitignore  & the  source
+# documents.
+
+dirclean : clean
+	@printf "${WHITEBOLD}Dir-cleaning...${CYAN}\n"
+	@for file in * .*; do      \
+	  case $$file in           \
+            '.' | '..')          ;;\
+	    $(FILE)* | Makefile) ;;\
+	    $(FILES)*)	 	 ;;\
+	    $(LODESTONE))        ;;\
+	    $(README))		 ;;\
+	    $(GIT))		 ;;\
+            *) rm -vfr $$file	 ;;\
+	  esac                     \
+	done
+	@printf "${GREEN}done dir-cleaning.${CLEAR}\n"
+
+# after dirclean: remove INFO, HTML, and PDF, and FILES
+distclean : dirclean
+	@printf "${WHITEBOLD}Dist-cleaning...${CYAN}\n"
+	@rm -vfr $(FILE) $(FILE).info $(FILE).pdf $(ROOT)/$(FILES)
+	@printf "${GREEN}done dist-cleaning.${CLEAR}\n"
+
+# allclean: remove TEXI, leaving only TWJR and Makefile
+allclean : distclean
+	@printf "${WHITEBOLD}Cleaning all...${CYAN}\n"
+	@rm -vfr $(FILE).texi
+	@printf "${GREEN}done cleaning all.${CLEAR}\n"
+
+@
+
+
+
+
+@c -----------------------------------------------------------------------------
+
+@node Makefile Applications
+@appendixsec Makefile Applications
+@cindex Makefile applications
+
+Place any targets for running  code-specific commands here, such as executables
+in the @file{bin/} directory.  The file @verb{|@<Makefile---Applicaionts@>|} is
+a hook  that can  be used in  another part  of the source  document; this  is a
+fundamental feature of literate programming.
+
+@<Makefile---Applications@>=
+@
+
+
+@c END The Makefile
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                        CODE CHUNK SUMMARIES
+
+@node Code Chunk Summaries
+@appendix Code Chunk Summaries
+
+This @value{APPENDIX} presents alphabetical lists of
+all the file definitions, the code chunk definitions,
+and the code chunk references.
+
+@menu
+* File Definitions::          Source files by definition.
+* Code Chunk Definitions::    Code chunks by definition.
+* Code Chunk References::     Code chunks by reference.
+@end menu
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node File Definitions
+@appendixsec Source File Definitions
+
+@print_file_defs
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Code Chunk Definitions
+@appendixsec Code Chunk Definitions
+
+@print_code_defs
+
+
+
+
+@c -----------------------------------------------------------------------------
+@node Code Chunk References
+@appendixsec Code Chunk References
+
+@print_code_refs
+
+
+@c END Code Chunk Summaries
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+@part Back Matter
+@c <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                                BIBLIOGRAPHY
+
+@node Bibliography
+@unnumbered Bibliography
+
+@c @table @asis
+
+@c @mybibitem{LitProg:Home}
+@c "On Misreadings", email, January 2009 @url{http://www.literateprogramming.com/}
+
+@c @mybibitem{LitProg:Knuth}
+@c @url{``Literate Programming (1984)'' in Literate Programming. CSLI, 1992, pg.
+@c 99.}
+
+@c @mybibitem{LitProg:Ramsey}
+@c @url{ahttps://www.cs.tufts.edu/~nr/noweb/}
+
+@c @end table
+
+
+@c END Bibliography
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c *****************************************************************************
+@c                             LIST OF TABLES
+
+@node List of Tables
+@unnumbered List of Tables
+
+@listoffloats Table
+
+
+
+
+
+
+
+@c END Lists
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c  *****************************************************************************
+@c                               CONCEPT INDEX
+
+
+@node Concept Index
+@unnumbered Index
+
+@printindex cp
+
+
+@c END Indices
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@bye
+
+TODO:
