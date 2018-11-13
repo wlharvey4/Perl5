@@ -1,8 +1,8 @@
 0\input texinfo   @c -*- mode: texinfo -*-
 
 @c FILE    Perl5.twjr
-@c VERSION 0.1.1
-@c DATE    2018-11-12T15:20
+@c VERSION 0.1.2
+@c DATE    2018-11-13T06:40
 @c AUTHOR  wlharvey4
 
 @c *****************************************************************************
@@ -270,8 +270,50 @@ printf "${GREEN}initial setup done.${CLEAR}\n"
 @end initial_setup
 @c <------------------------------------->
 
+
 @c END Special TexiwebJr Commands
 @c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN PRINTED MATTER
+@c --COPYING
+@c --FRONT MATTER
+@c   **TITLE PAGES
+@c     ..Short Title
+@c     ..Title Page
+@c     ..Copyright Page
+@c --MAIN MATTER
+@c   **Top
+@c     --- unpaginated ---
+@c     ..General Introduction
+@c     ..Menus
+@c     ..Table of Contents
+@c     --- paginated --- unnumbered ---
+@c     ..Front Matter
+@c       ~~Forward
+@c       ~~Preface
+@c     --- paginated --- numbered ---
+@c     ..Main Matter
+@c       ~~Chapters
+@c         >>Sections
+@c           ^^Subsections
+@c             ##Subsubsections
+@c     --- paginated --- lettered ---
+@c       ~~Appendices
+@c --BACK MATTER
+@c   --- paginated --- unnumbered ---
+@c   **Lists (Unnumbered)
+@c     ..Bibliography
+@c     ..Tables
+@c     ..Indices
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -397,6 +439,9 @@ URL: @url{http://www.example.com/} @*
 
 @c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @c BEGIN TOP
+@c --General Introduction
+@c --Main Menu
+@c --Table of Contents
 @c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -447,13 +492,13 @@ This file documents @value{TITLE}.
 
 @c @summarycontents
 @contents
-
 @c <------------------------------------->
+
 
 @c -----------------------------------------------------------------------------
 
 
-@c END MENU & TOC
+@c END Menu & TOC
 @c /////////////////////////////////////////////////////////////////////////////
 
 
@@ -461,12 +506,16 @@ This file documents @value{TITLE}.
 
 
 
+@c <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+@part Front Matter
+@c <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
+
+
+
 
 
 @c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-@part Front Matter
-
 @c BEGIN FRONT-MATTER
 @c --Forward
 @c --Preface
@@ -499,6 +548,14 @@ This file documents @value{TITLE}.
 @c *****************************************************************************
 @c                                  PREFACE
 
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN Preface
+@c --Audience
+@c --Overviw
+@c --Conventions
+@c --Acknowledgements
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 @node Preface
 @unnumbered Preface
 
@@ -515,6 +572,7 @@ Text here.
 
 
 @c -----------------------------------------------------------------------------
+
 @node Audience
 @unnumberedsec Intended Audience
 
@@ -524,6 +582,7 @@ Audience text here.
 
 
 @c -----------------------------------------------------------------------------
+
 @node Overview
 @unnumberedsec What Is Covered
 
@@ -588,6 +647,7 @@ also need to update `texinfo` to at least 6.5 if that is the case.
 
 
 @c -----------------------------------------------------------------------------
+
 @node Conventions
 @unnumberedsec Typographical Conventions
 
@@ -649,6 +709,13 @@ Acknowledgements go here.
 
 
 
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN CHAPTERS
+@c --Introduction
+@c --Chapters 1-1
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 @c *****************************************************************************
 @c                          CHAPTER: Introduction
 
@@ -656,9 +723,18 @@ Acknowledgements go here.
 @chapter Introduction
 
 
-
 @c END CHAPTER Introduction
 @c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+@c <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+@part Part I
+@c <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
+
 
 
 
@@ -734,6 +810,7 @@ Use one of these commands:
 
 @example
 \curl -L https://install.perlbrew.pl | bash
+ (@pxref{Perlbrew Install Shell Script})
 
 # Linux
 \wget -O - https://install.perlbrew.pl | bash
@@ -757,6 +834,88 @@ If  it  is installed  with  @command{cpan},  the @command{perlbrew}  executable
 should       be       installed      as       @file{/usr/bin/perlbrew}       or
 @file{/usr/local/bin/perlbrew}.   For all  users who  want to  use perlbrew,  a
 prior @command{perlbrew init} needs to be executed.
+
+
+@c .....................................
+
+@node Perlbrew Install Shell Script
+@subsection Perlbrew Install Shell Script
+@cindex install shell script
+
+@heading Perlbrew Install
+
+@(perlbrew-install.pl@)=
+#!/bin/sh
+
+
+if [ -z "${PERLBREWURL}" ]; then
+    PERLBREWURL=https://raw.githubusercontent.com/gugod/App-perlbrew/master/perlbrew
+fi
+
+clean_exit () {
+    [ ! -z "$LOCALINSTALLER" -a -f $LOCALINSTALLER ] && rm $LOCALINSTALLER
+    exit $1
+}
+
+
+if [ -z "$TMPDIR" -o ! -d "$TMPDIR" ]; then
+    if [ -d "/tmp" ]; then
+        TMPDIR="/tmp"
+    else
+        TMPDIR="."
+    fi
+fi
+
+# TMPDIR could have been exported as variable
+# so it is required to change to such directory always
+cd $TMPDIR || clean_exit 1
+LOCALINSTALLER=$(mktemp perlbrew.XXXXXX)
+
+
+
+
+
+echo
+if type curl >/dev/null 2>&1; then
+  PERLBREWDOWNLOAD="curl -f -sS -Lo $LOCALINSTALLER $PERLBREWURL"
+elif type fetch >/dev/null 2>&1; then
+  PERLBREWDOWNLOAD="fetch -o $LOCALINSTALLER $PERLBREWURL"
+elif type wget >/dev/null 2>&1; then
+  PERLBREWDOWNLOAD="wget -nv -O $LOCALINSTALLER $PERLBREWURL"
+else
+  echo "Need either wget, fetch or curl to use $0"
+  clean_exit
+fi
+
+
+echo "## Download the latest perlbrew"
+$PERLBREWDOWNLOAD || clean_exit 1
+
+echo
+echo "## Installing perlbrew"
+
+# loop thru available well known Perl installations
+for PERL in "/usr/bin/perl" "/usr/local/bin/perl"
+do
+    [ -x "$PERL" ] && echo "Using Perl <$PERL>" && break
+done
+
+if [ ! -x "$PERL" ]; then
+  echo "Need /usr/bin/perl or /usr/local/bin/perl to use $0"
+  clean_exit 2
+fi
+
+[ ! -x $LOCALINSTALLER ] && chmod +x $LOCALINSTALLER
+$PERL $LOCALINSTALLER self-install || clean_exit 3
+
+echo "## Installing patchperl"
+$PERL $LOCALINSTALLER -f -q install-patchperl || clean_exit 4
+
+echo
+echo "## Done."
+rm ./$LOCALINSTALLER
+
+@
 
 
 
@@ -992,6 +1151,8 @@ META.yml
 
 @post_create Slurp.pm printf "${PURPLE}"; mkdir -vp ${PWD}/files/lib/File; mv -v Slurp.pm "${PWD}/files/lib/File" && printf "${GREEN}done moving ${PURPLEBOLD}Slurp.pm.${CLEAR}\n" || printf "${RED}failed.${CLEAR}\n"
 
+@<Makefile---Applications--Hook@>=
+@
 
 @c _____________________________________
 
@@ -2452,6 +2613,21 @@ sub trap_function_list_context {
 @c /////////////////////////////////////////////////////////////////////////////
 
 
+@c END CHAPTERS
+@c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@c BEGIN APPENDICES
+@c --The Makefile
+@c --Code Chunk Summaries
+@c %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
@@ -2459,10 +2635,8 @@ sub trap_function_list_context {
 
 
 @c<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-@c APPENDICES
+@part APPENDICES
 @c<><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
-
-
 
 
 
@@ -2510,6 +2684,10 @@ The TWJR Targets
 @command{twjrkeep dirclean}
 @item jrtangle
 @command{jrtangle $(FILE).twjr}
+@item jrweave
+@command{jrweave $(FILE).twjr > $(FILE).texi}
+@item dist
+@command{jrweave $(FILE).twjr > $(FILE).texi}
 @item newmakefile
 @command{jrtangle allclean}
 @end table
@@ -2692,7 +2870,6 @@ to finishing.   If you want  to retain  the build and  log files, then  run the
 target @file{twjrkeep} instead.
 
 The  file  @file{.lodestone}   is  used  to  set  a  reference   time  for  the
-
 @acronym{TWJR} file,  so that  if the @acronym{TWJR}  file changes,  new source
 documents will be generated; otherwise, it  will simply be left alone. In other
 words, if @file{.lodestone}  is older than @file{.twjr},  then @file{.twjr} has
@@ -2708,32 +2885,60 @@ any desired target.
 # TWJR TARGETS
 ##############
 
+# <------------------------------------->
+#               twjrkeep
+
 # Process everything; don't remove any build or log files;
+
 twjrkeep : jrtangle jrweave info pdf html
 
+
+# <------------------------------------->
+#                 TWJR
+#                DEFAULT
+
 # Process everything; remove build files and logs.
+
 TWJR : twjr
 twjr : twjrkeep dirclean
+
+
+# <------------------------------------->
+#               JRTANGLE
 
 # JRTANGLE depends upon the LODESTONE and the ROOT/FILES directory;
 # if either is missing or out of date, then JRTANGLE will be run to
 # extract its files.
+
 JRTANGLE : TANGLE
 TANGLE   : jrtangle
 jrtangle : tangle
 tangle   : files $(LODESTONE)
 
+@
+
+@anchor{LODESTONE}
+@<Makefile---TWJR Targets@>=
+# <------------------------------------->
+#               LODESTONE
+
 # Checks the relative time to determine if JRTANGLE should be rerun
+
 $(LODESTONE) : $(FILE).twjr
 	@printf "${YELLOW}Tangling $(FILE)...${CLEAR}\n"
 	@jrtangle $(FILE).twjr
 	@touch $(LODESTONE)
 	@printf "${GREEN}done tangling.${CLEAR}\n"
 
+
+# <------------------------------------->
+#                files
+
 # Checks for  the existence  of the ROOT/FILES  directory; extracts  files into
 # them if they don't  exist or are out of date; they must  be retouched if they
 # exist but  are out of date  because they will  not be remade or  updated when
 # files are extracted into them
+
 files : $(ROOT)/$(FILES)
 $(ROOT)/$(FILES) : $(FILE).twjr
 	@printf "${YELLOW}Creating files...${CLEAR}\n"
@@ -2742,12 +2947,22 @@ $(ROOT)/$(FILES) : $(FILE).twjr
 	@touch $(ROOT)/$(FILES)
 	@printf "${GREEN}done creating files.${CLEAR}\n"
 
+
+# <------------------------------------->
+#              newmakefile
+
 # Extracts the Makefile if necessary by tangling; everything else
 # is thereafter deleted
+
 newmakefile : $(LODESTONE) allclean
+
+
+# <------------------------------------->
+#              JRWEAVE
 
 # Extracts the TEXI, and updates the nodes and sections with a batch call to
 # Emacs; it depends upon TWJR
+
 JRWEAVE : WEAVE
 WEAVE   : TEXI
 TEXI    : jrweave
@@ -2763,8 +2978,22 @@ $(FILE).texi : $(FILE).twjr
 	  (texinfo-master-menu 1) (save-buffer 0))' 2> .batch.log
 	@printf "${GREEN}done updating.${CLEAR}\n"
 
+# <------------------------------------->
+#                DIST
+
+# Runs jrtangle jrweave distclean; prepares for git commit
+
+DIST : dist
+dist : jrtangle jrweave distclean
+
+
+# <------------------------------------->
+#                 INFO
+#               OPENINFO
+
 # Runs makeinfo on the TEXI file;
 # Opens the INFO file in Emacs
+
 INFO : info
 info : $(FILE).info
 $(FILE).info : $(FILE).texi
@@ -2776,8 +3005,14 @@ openinfo : INFO
 	@emacsclient -s server --eval '(info "($(ROOT)/$(FILE).info)top")'
 	@printf "${GREEN}done${CLEAR}\n"
 
+
+# <------------------------------------->
+#                  PDF
+#                OPENPDF
+
 # Runs pdftexi2dvi on the TEXI file;
 # Opens the PDF file
+
 PDF : pdf
 pdf : $(FILE).pdf
 $(FILE).pdf : $(FILE).texi
@@ -2789,8 +3024,14 @@ openpdf : PDF
 	@open $(FILE).pdf
 	@printf "${GREEN}done${CLEAR}\n"
 
+
+# <------------------------------------->
+#                 HTML
+#               OPENHTML
+
 # Runs makeinfo --html on the TEXI file;
 # Opens index.html in a browser
+
 HTML : html
 html : $(FILE)/index.html
 $(FILE)/index.html : $(FILE).texi
@@ -2823,13 +3064,23 @@ directories, leaving just  the @file{TWJR} file, the @file{TEXI}  file, and the
 except the @acronym{TWJR} file and the @file{Makefile}.
 
 @<Makefile---Clean Targets@>=
-.PHONY : clean dirclean distclean worldclean allclean
+# CLEAN TARGETS
+################
+.PHONY : clean dirclean distclean allclean
+
+# <------------------------------------->
+#                clean
 
 # remove backup files
+
 clean :
 	@printf "${WHITEBOLD}Cleaning...${CYAN}\n"
 	@rm -f *~ .*~ #*# #*.*#
 	@printf "${GREEN}done cleaning.${CLEAR}\n"
+
+
+# <------------------------------------->
+#               dirclean
 
 # after clean:  remove all  build and miscellaneous  files, leaving  only TWJR,
 # TEXI,  INFO, HTML,  PDF,  Makefile,  README, .git,  .gitignore  & the  source
@@ -2850,13 +3101,23 @@ dirclean : clean
 	done
 	@printf "${GREEN}done dir-cleaning.${CLEAR}\n"
 
+
+# <------------------------------------->
+#                distclean
+
 # after dirclean: remove INFO, HTML, and PDF, and FILES
+
 distclean : dirclean
 	@printf "${WHITEBOLD}Dist-cleaning...${CYAN}\n"
 	@rm -vfr $(FILE) $(FILE).info $(FILE).pdf $(ROOT)/$(FILES)
 	@printf "${GREEN}done dist-cleaning.${CLEAR}\n"
 
+
+# <------------------------------------->
+#                allclean
+
 # allclean: remove TEXI, leaving only TWJR and Makefile
+
 allclean : distclean
 	@printf "${WHITEBOLD}Cleaning all...${CYAN}\n"
 	@rm -vfr $(FILE).texi
@@ -2879,6 +3140,11 @@ a hook  that can  be used in  another part  of the source  document; this  is a
 fundamental feature of literate programming.
 
 @<Makefile---Applications@>=
+# APPLICATION TARGETS
+######################
+
+@<Makefile---Applications--Hook@>
+
 @
 
 
