@@ -5,8 +5,8 @@
 \input texinfo   @c -*- mode: texinfo -*-
 
 @c FILE    Perl5.twjr
-@c VERSION 0.1.3
-@c DATE    2018-11-13T09:00
+@c VERSION 0.2.0
+@c DATE    2018-11-13T10:45
 @c AUTHOR  wlharvey4
 
 @c *****************************************************************************
@@ -513,7 +513,7 @@ About
 * Using Perlbrew::
 * Perlbrew Articles::
 
-With @command{cpan}
+Perlbrew Directory Structure
 
 * Perlbrew Install Shell Script::
 
@@ -525,6 +525,10 @@ About This Article
 
 * Installing Perlbrew::
 * Project Web Site::
+* Getting To Know Perlbrew::
+* Installing Perl 5::
+* Managing Perl 5 Installations::
+* Managing Modules::
 
 About Packages
 
@@ -822,6 +826,8 @@ Acknowledgements go here.
 @node Introduction, Perlbrew, Preface, Top
 @chapter Introduction
 
+@url{http://www.perl.org/, Perl 5 Official Website}
+
 
 @c END CHAPTER Introduction
 @c /////////////////////////////////////////////////////////////////////////////
@@ -930,8 +936,12 @@ Use one of these commands:
 If you prefer to install with cpan, there are two steps:
 
 @enumerate
+
+@cindex @command{cpan} command
 @item
 @samp{sudo cpan App::perlbrew}
+
+@cindex @command{init} command
 @item
 @samp{perlbrew init}
 @end enumerate
@@ -940,6 +950,43 @@ If  it  is installed  with  @command{cpan},  the @command{perlbrew}  executable
 should       be       installed      as       @file{/usr/bin/perlbrew}       or
 @file{/usr/local/bin/perlbrew}.   For all  users who  want to  use perlbrew,  a
 prior @command{perlbrew init} needs to be executed.
+
+@cindex perlbrew directory structure
+@cindex directory structure, under perlbrew
+@heading Perlbrew Directory Structure
+
+@verbatim
+/Users/lolh/.perlbrew
+└── init
+
+/Users/lolh/perl5
+└── perlbrew
+    ├── bin
+    │   ├── cpanm*
+    │   ├── patchperl*
+    │   └── perlbrew*
+    ├── build
+    │   └── perl-5.28.0
+    │       └── perl-5.28.0
+    ├── build.perl-5.28.0.log
+    ├── dists
+    │   └── perl-5.28.0.tar.gz
+    ├── etc
+    │   ├── bashrc
+    │   ├── csh_reinit
+    │   ├── csh_set_path
+    │   ├── csh_wrapper
+    │   ├── cshrc
+    │   ├── perlbrew-completion.bash
+    │   └── perlbrew.fish
+    └── perls
+        └── perl-5.28.0
+            ├── bin
+            ├── lib
+            └── man
+
+12 directories, 12 files
+@end verbatim
 
 
 @c .....................................
@@ -1047,7 +1094,7 @@ rm ./$LOCALINSTALLER
 @section Using Perlbrew
 @cindex perlbrew, using
 
-
+@url{https://github.com/gugod/App-perlbrew, Perlbrew Git Repo}
 
 
 @c -----------------------------------------------------------------------------
@@ -1134,6 +1181,10 @@ and run.
 @menu
 * Installing Perlbrew::
 * Project Web Site::
+* Getting To Know Perlbrew::
+* Installing Perl 5::
+* Managing Perl 5 Installations::
+* Managing Modules::
 @end menu
 
 @node Installing Perlbrew, Project Web Site, Multiple Perl 5 Installations, Multiple Perl 5 Installations
@@ -1154,13 +1205,252 @@ By installing it from the CPAN (the name is @file{App::Perlbrew}).
 
 @c _____________________________________
 
-@node Project Web Site,  , Installing Perlbrew, Multiple Perl 5 Installations
+@node Project Web Site, Getting To Know Perlbrew, Installing Perlbrew, Multiple Perl 5 Installations
 @subsubsection Installing From The Project Web Site
 @cindex install from project site
 
 Getting the program from the project web  site provides a better control on its
 installation, as well as an always up-to-date version.
 
+@heading Shell Script
+In  order to  install perlbrew  directly from  the project’s  website, a
+command  line utility  is  required  to download  data  via HTTP,  i.e.,
+@command{curl}, @command{wget}, or @command{fetch}.   Now, provide a URL
+(@pxref{Perlbrew Install  Shell Script})  to the  command, and  pipe the
+result through a shell interpreter:
+
+@example
+% wget -O - https://install.perlbrew.pl | sh
+...
+## Installing perlbrew
+Using Perl </usr/local/bin/perl>
+perlbrew is installed: ~/perl5/perlbrew/bin/
+...
+@end example
+
+Perlbrew  creates a  directory  tree in  the user's  home  directory under  the
+@file{perl5/perlbrew} directory.  That's the main directory where perlbrew will
+install Perl  5 versions,  and @file{perl5}  is the  local directory  to enable
+per-user modules.  At the end of the installation, the program prints a message
+about sourcing a file into @file{.profile}:
+
+@example
+source ~/perl5/perlbrew/etc/bashrc
+@end example
+
+@heading Checking the Installation
+Once perlbrew has been  installed and all the shell files  have been loaded, it
+is  possible  to  check  the installation  by  issuing  the  @command{perlbrew}
+command, or with the version command to confirm the version installed:
+@samp{perlbrew version}.
+
+@c _____________________________________
+
+@node Getting To Know Perlbrew, Installing Perl 5, Project Web Site, Multiple Perl 5 Installations
+@subsubsection Getting To Know Perlbrew
+@cindex getting to know perlbrew
+
+@cindex @command{perlbrew} command
+@cindex @command{help} command
+The  @command{perlbrew}  command works  through  commands:  each action  to  be
+performed  has to  be  specified via  one command  and,  or, options.   Running
+perlbrew without any  command (or with a wrong command)  provides a help screen
+with all the  available commands.  The @command{help} command  accepts the name
+of another command as optional argument, providing more info about the usage of
+the latter  command.  For instance,  @samp{perlbrew help init}  prints detailed
+instructions about the init command.
+
+@cindex activate perl
+It  is  worth  noting  that  after  having  installed  perlbrew,  it  will  not
+automatically  activate itself.   That is  the user  will continue  to use  the
+system-wide Perl 5.
+
+@cindex release numbers
+@heading Release Numbers
+Perlbrew  identifies  Perl  5  versions via  the  @dfn{release  numbers}.   For
+instance, @code{5.27.7} identifies that specific version  of Perl 5.  If only a
+version number  is provided,  perlbrew automatically  consider it  as a  Perl 5
+version.  Otherwise,  the prefix  @code{perl-} can  be used,  and often,  it is
+displayed through the commands output  (e.g., @code{perl-5.7.7}).  The usage of
+a prefix helps to avoid clashes with cperl instances.
+
+@c _____________________________________
+
+@node Installing Perl 5, Managing Perl 5 Installations, Getting To Know Perlbrew, Multiple Perl 5 Installations
+@subsubsection Installing Perl 5 Via Perlbrew
+@cindex install Perl 5 via perlbrew
+
+@heading Initializing Perlbrew
+@cindex @command{init} command
+@cindex initialize system
+
+In order to start  using perlbrew, the system has to  be initialized. Using the
+init command is as simple as simple as shown below:
+
+@example
+% perlbrew init
+
+perlbrew root (~/perl5/perlbrew) is initialized.
+@end example
+
+The initialization step  must only be performed one time  per installation, and
+does  not  enable any  specific  Perl  5 interpreter.  To  use  another Perl  5
+interpreter, it is necessary to download and install it.
+
+@heading Installing a Perl 5 Interpreter
+@cindex install perl 5 interpreter
+
+To install a new Perl 5 interpreter, follow the following steps:
+
+@enumerate
+@item
+choose the right version from the available ones;
+
+@cindex @command{available}
+The command  @command{available} shows all  known Perl  5 versions that  can be
+downloaded  and installed.  If  a version  has been  installed  on the  current
+system, an @kbd{i} is placed at the beginning of the line.
+
+Assume   the  latest   version,   @code{Perl  5.27.7},   is   chosen  for   the
+installation. The  name, perlbrew  , recognizes  a Perl  5 interpreter  via the
+first column of  the available output, so in this  case @code{perl-5.27.7}.  As
+already stated,  it is possible to  omit the initial @code{perl-},  hence using
+the name @code{5.27.7}, unless it clashes with cperl versions.
+
+@cindex @command{install}
+@item
+ask perlbrew to install;
+
+The @command{install}  command performs  a download  of the  specified version,
+compiles it, and installs into the perlbrew directory tree.
+
+@item
+Optionally, switch to such version of Perl 5.
+
+@cindex @command{list}
+It is possible to see all installed versions using the @command{list} command:
+
+@cindex @command{switch}
+To start  using a  specific interpreter, the  @command{switch} command  must be
+run, specifying of course the version the user wants to run.  Immediately after
+switching  to the  specified  Perl 5  interpreter,  the @command{perl}  command
+returns the  version that is  different from  the system-wide installed  Perl 5
+(which in this article was @command{5.24.3}).
+
+@item
+Choose the version among those available
+
+@item
+Switching to System Perl
+@cindex @command{off}
+@cindex @command{switch-off}
+
+If,  for any  reason,  you need  to  run some  commands  using the  system-wide
+available Perl 5 interpreter, you can  turn perlbrew off with the @command{off}
+command. As a result, all perlbrew  facilities (i.e., locally installed Perl 5)
+will be disabled.  Also, it is important to note that the @command{off} command
+works only in  the current shell, while the  @command{switch-off} command turns
+off perlbrew on all subsequent shell instances.
+
+To activate again the Perl 5 installed via perlbrew, it’s suffice to re-run the
+@command{switch} command: @samp{% perlbrew switch 5.27.7 }.
+
+@end enumerate
+
+@c _____________________________________
+
+@node Managing Perl 5 Installations, Managing Modules, Installing Perl 5, Multiple Perl 5 Installations
+@subsubsection Managing Perl 5 Installations
+@cindex managing installations
+
+@heading Alias
+
+@cindex @command{alias}
+There  are   several  commands   are  essential  when   managing  the   Perl  5
+installation. One useful  command is @command{alias}: it allows  for a renaming
+of a  Perl 5 installation to  a more human-readable name.   The @command{alias}
+command requires  a fully  qualified name,  not a  simple version  number.  For
+instance, to name the just installed Perl @code{5.27.7} to @code{bsdmagv1} , it
+is possible to create the new alias:
+
+@example
+% perlbrew alias create perl-5.27.7 bsdmagv1
+
+% perlbrew list
+@print{} bsdmagv1 (5.27.7)
+
+% perlbrew switch bsdmagv1
+@end example
+
+As shown  above, @code{bsdmagv1} is  now a usable  name that refers  to version
+@code{5.27.7}.
+
+@cindex @option{--as}
+The @command{alias}  command is  useful for post-install  management.  However,
+the @command{install} command accepts an extra option @option{--as} that allows
+for specifying a name that will be used as the main name for the installed Perl
+5:
+
+@example
+% perlbrew install perl-5.8.9 --as my-first-perl
+@end example
+
+Therefore,  the Perl  5 will  be available  to perlbrew  via the  special name,
+@code{my-first-perl}:
+
+@example
+% perlbrew list
+@print{} my-first-perl (5.8.9)
+@end example
+
+@heading Uninstalling and Cleaning
+
+In case a  Perl 5 distribution is no longer  necessary, the @command{uninstall}
+command can be used to delete it.
+
+The  @command{clean} command  removes  the compilation  objects and  downloaded
+archives,  and that  is  useful to  get back  disk  space after  installations:
+@samp{% perlbrew clean }.
+
+@c _____________________________________
+
+@node Managing Modules,  , Managing Perl 5 Installations, Multiple Perl 5 Installations
+@subsubsection Managing Modules with @command{cpanm}
+
+@cindex @command{cpanm} utility
+Perl 5  is famous for its  rich module ecosystem,  kept in the CPAN.  There are
+several tools to  manage CPAN modules from the command  line, and perlbrew uses
+@command{cpanm}, a zero-configuration client.
+
+@cindex @samp{install-cpanm} command
+To use @command{cpanm}, you have to install  it so that perlbrew itself can use
+it: the  @command{install-cpanm} command  does what  it says:  @samp{% perlbrew
+install-cpanm }.  @command{cpanm} is installed widely through perlbrew, so that
+it can be used for all the Perl 5 instances with a single installation.
+
+Once @command{cpanm} is working, it is quite  easy to install a new module, for
+instance @file{Archive::Zip}:
+
+@example
+% cpanm Archive::Zip
+...
+Successfully installed Archive-Zip-1.60
+4 distributions installed
+@end example
+
+@cindex clone all modules
+@cindex @command{clone-modules}
+It is also easy to clone all  installed modules from an instance to another via
+the command @command{clone-modules} as you can see here:
+
+@example
+% perlbrew clone-modules 5.27.7 5.26.1 
+@end example
+
+The above command will clone all modules installed on instance @code{5.27.7} to
+instance @code{5.26.1}. This command is useful when you have a quite customized
+Perl 5  installation, and want  to back up all  the modules you  have installed
+overtime.
 
 
 @c END SECTION: Perlbrew Articles
