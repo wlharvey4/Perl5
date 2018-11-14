@@ -17,7 +17,7 @@ FILES := files
 ################
 .PHONY : TWJR JRTANGLE TANGLE JRWEAVE WEAVE TEXI INFO PDF HTML
 .PHONY : default twjr twjrkeep jrtangle tangle
-.PHONY : jrweave weave texi info pdf html newmakefile
+.PHONY : jrweave weave texi info pdf html newmakefile syntax-checks
 
 default : TWJR
 
@@ -52,7 +52,7 @@ twjr : twjrkeep dirclean
 JRTANGLE : TANGLE
 TANGLE   : jrtangle
 jrtangle : tangle
-tangle   : files $(LODESTONE)
+tangle   : files $(LODESTONE) syntax-checks
 
 # <------------------------------------->
 #               LODESTONE
@@ -245,4 +245,17 @@ allclean : distclean
 
 
 
+# APPLICATION SYNTAX CHECKS
+###########################
+
+
+syntax-checks :
+	@printf "${YELLOW}checking syntax of installed Perl files...${PURPLEBOLD}\n";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/lib/File/Slurp.pm; printf "${CLEAR}";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/t/lib/FileSlurpTest.pm; printf "${CLEAR}";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/t/lib/FileSlurpTestOverride.pm; printf "${CLEAR}";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/t/01-error_edit_file.t; printf "${CLEAR}";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/t/01-error_edit_file_lines.t; printf "${CLEAR}";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/t/01-error_prepend_file.t; printf "${CLEAR}";
+	@printf "${PURPLEBOLD}"; perl -c ${PWD}/files/t/edit_file.t; printf "${CLEAR}"
 

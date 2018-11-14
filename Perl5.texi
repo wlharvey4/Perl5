@@ -5,8 +5,8 @@
 \input texinfo   @c -*- mode: texinfo -*-
 
 @c FILE    Perl5.twjr
-@c VERSION 0.2.0
-@c DATE    2018-11-13T10:45
+@c VERSION 0.2.1
+@c DATE    2018-11-13T17:40
 @c AUTHOR  wlharvey4
 
 @c *****************************************************************************
@@ -532,27 +532,65 @@ About This Article
 
 About Packages
 
+* Common Perl Code::
+* Strict Warnings File-Spec Basename Lib::
 * About File-Slurp::
 
-Current Version
+Where is @file{File::Slurp}
 
 * File-Slurp Manifest::
 * File-Slurp Code::
 * File-Slurp Tests::
-* FileSlurpTest Code::
+* Test FileSlurpTest::
+* FileSlurpTestOverride Code::
+* Test 00-report-prereqs.dd::
+* Test 00-report-prereqs.t::
+* Test 01-error_edit_file.t::
+* 01-error_edit_file_lines.t Test::
+* 01-error_prepend_file.t Test::
+* edit_file.t Test::
 
 @file{File::Slurp} Code
 
 * Package File-Slurp::
 * Package File-Slurp Perldoc::
 
-@file{File::Slurp} Tests
-
-* List of Tests for File-Slurp::
-
-FileSlurpTest Code
+Test FileSlurpTest
 
 * FileSlurpTest Code Body::
+
+Test @file{t/00-report-prereqs.dd}
+
+* 00-report-prereqs.dd Body::
+
+Test@file{00-report-prereqs.t}
+
+* 00-report-prereqs.t Body::
+
+Test @file{01-error_edit_file.t}
+
+* 01-error_edit_file.t Body::
+* 01-error_edit_file.t---Body--Use::
+* 01-error_edit_file.t---Body--Plan Tests::
+* 01-error_edit_file.t---Body--Edit File Error::
+* 01-error_edit_file.t---Body--# of Error::
+
+@file{01-error_prepend_file.t} Test
+
+* 01-error_prepend_file.t---Body Code::
+* 01-error_prepend_file.t---Body--Use Code::
+* 01-error_prepend_file.t---Body--Test-More Code::
+* 01-error_prepend_file.t---Body--Warnings Off Code::
+* 01-error_prepend_file.t---Body--Tests Code::
+* 01-error_prepend_file.t---Step 1 Code::
+* 01-error_prepend_file.t---Step 2 Code::
+* 01-error_prepend_file.t---Step 3 Code::
+
+@file{edit_file.t} Test
+
+* edit_file.t---Use::
+* edit_file.t---PRE::
+* edit_file.t---Body--Test 1::
 
 The Makefile
 
@@ -561,6 +599,7 @@ The Makefile
 * Makefile TWJR Targets::
 * Makefile Clean Targets::
 * Makefile Applications::
+* Makefile Syntax Checks::
 
 Code Chunk Summaries
 
@@ -1475,32 +1514,158 @@ overtime.
 @cindex about packages
 @cindex packages, about
 
+@need 400
+@anchor{Makefile---Applications--Hook}
+@cdindex @r{<@i{Makefile---Applications--Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Hook}>} @equiv{}
+@example
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications}>}; see its first definition at @ref{Makefile---Applications}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c -----------------------------------------------------------------------------
+
+@menu
+* Common Perl Code::
+* Strict Warnings File-Spec Basename Lib::
+* About File-Slurp::
+@end menu
+
+@node Common Perl Code, Strict Warnings File-Spec Basename Lib, About Packages, About Packages
+@section Common Perl Code
+
+@c .....................................
+
+@node Strict Warnings File-Spec Basename Lib, About File-Slurp, Common Perl Code, About Packages
+@section String Warnings File::Spec Basename Lib
+
+@need 400
+@anchor{Use-Strict-Warnings}
+@cdindex @r{<@i{Use Strict Warnings}>}, definition
+@noindent
+@r{<@i{Use Strict Warnings}>} @equiv{}
+@example
+use strict;
+use warnings;
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{00-report-prereqs.t---Body}>} @tab See @ref{00-report-prereqs-t---Body}.
+@item @r{@{@file{01-error_edit_file.t}@}} @tab See @ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}} @tab See @ref{01-error-prepend-file-t}.
+@item @r{<@i{Package---File--Slurp-Code}>} @tab See @ref{Package---File--Slurp-Code}.
+@item @r{<@i{Test---FileSlurp--FileSlurpTest}>} @tab See @ref{Test---FileSlurp--FileSlurpTest}.
+@item @r{@{@file{edit_file.t}@}} @tab See @ref{edit-file-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@need 400
+@anchor{Use-File-Spec-Basename}
+@cdindex @r{<@i{Use File-Spec Basename}>}, definition
+@noindent
+@r{<@i{Use File-Spec Basename}>} @equiv{}
+@example
+use File::Spec ();
+use File::Basename ();
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{@{@file{01-error_edit_file.t}@}} @tab See @ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}} @tab See @ref{01-error-prepend-file-t}.
+@item @r{@{@file{FileSlurpTest.pm}@}} @tab See @ref{FileSlurpTest-pm}.
+@item @r{@{@file{Slurp.pm}@}} @tab See @ref{Slurp-pm}.
+@item @r{@{@file{edit_file.t}@}} @tab See @ref{edit-file-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@need 400
+@anchor{Use-TWJR-Lib}
+@cdindex @r{<@i{Use TWJR Lib}>}, definition
+@noindent
+@r{<@i{Use TWJR Lib}>} @equiv{}
+@example
+use lib (File::Spec->catdir(File::Spec->rel2abs("./files"), 'lib'));
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{@{@file{01-error_edit_file.t}@}} @tab See @ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}} @tab See @ref{01-error-prepend-file-t}.
+@item @r{@{@file{FileSlurpTest.pm}@}} @tab See @ref{FileSlurpTest-pm}.
+@item @r{@{@file{Slurp.pm}@}} @tab See @ref{Slurp-pm}.
+@item @r{@{@file{edit_file.t}@}} @tab See @ref{edit-file-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
 
 
 
 @c -----------------------------------------------------------------------------
 @c                          SECTION: File::Slurp
 
-@menu
-* About File-Slurp::
-@end menu
-
-@node About File-Slurp,  , About Packages, About Packages
+@node About File-Slurp,  , Strict Warnings File-Spec Basename Lib, About Packages
 @section About File::Slurp
 @cindex about @file{File::Slurp}
 @cindex @file{File::Slurp}, about
 
-@heading About @file{File::Slurp}
-
 Simple and Efficient Reading/Writing/Modifying of Complete Files
-
-@url{https://github.com/perhunter/slurp, @file{File::Slurp} on Github}
-
-@url{https://metacpan.org/release/File-Slurp, @file{File::Slurp} on MetaCPAN}
 
 @subheading Current Version
 
 @file{File::Slurp-9999.24} as of 2018-10-29
+
+@heading Where is @file{File::Slurp}
+
+@itemize
+
+@item
+@url{https://github.com/perhunter/slurp, @file{File::Slurp} on Github}
+
+@item
+@url{https://metacpan.org/release/File-Slurp, @file{File::Slurp} on MetaCPAN}
+@end itemize
 
 
 @c .....................................
@@ -1509,7 +1674,14 @@ Simple and Efficient Reading/Writing/Modifying of Complete Files
 * File-Slurp Manifest::
 * File-Slurp Code::
 * File-Slurp Tests::
-* FileSlurpTest Code::
+* Test FileSlurpTest::
+* FileSlurpTestOverride Code::
+* Test 00-report-prereqs.dd::
+* Test 00-report-prereqs.t::
+* Test 01-error_edit_file.t::
+* 01-error_edit_file_lines.t Test::
+* 01-error_prepend_file.t Test::
+* edit_file.t Test::
 @end menu
 
 @node File-Slurp Manifest, File-Slurp Code, About File-Slurp, About File-Slurp
@@ -1578,12 +1750,16 @@ META.yml
 
 @need 400
 @anchor{Slurp-pm}
+@crindex @r{<@i{Use File-Spec Basename}>}, use
+@crindex @r{<@i{Use TWJR Lib}>}, use
 @crindex @r{<@i{Package---File--Slurp-Code}>}, use
 @crindex @r{<@i{Package---File--Slurp-Perldoc}>}, use
 @cdindex @r{@{@file{Slurp.pm}@}}, definition
 @noindent
 @r{@{@file{Slurp.pm}@}} @equiv{}
 @example
+@r{<@i{Use File-Spec Basename}>}
+@r{<@i{Use TWJR Lib}>}
 @r{<@i{Package---File--Slurp-Code}>}
 @r{<@i{Package---File--Slurp-Perldoc}>}
 
@@ -1598,6 +1774,8 @@ The following table lists called chunk definition points.
 @headitem Chunk name @tab First definition point
 @item @r{<@i{Package---File--Slurp-Code}>} @tab See @ref{Package---File--Slurp-Code}.
 @item @r{<@i{Package---File--Slurp-Perldoc}>} @tab See @ref{Package---File--Slurp-Perldoc}.
+@item @r{<@i{Use File-Spec Basename}>} @tab See @ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use TWJR Lib}>} @tab See @ref{Use-TWJR-Lib}.
 @end multitable
 @iftex
 @textfonts @rm
@@ -1605,19 +1783,28 @@ The following table lists called chunk definition points.
 
 
 @need 400
-@anchor{Makefile---Applications--Hook}
-@cdindex @r{<@i{Makefile---Applications--Hook}>}, definition
+@anchor{Makefile---Applications--Syntax-Checks-Hook-1}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
 @noindent
-@r{<@i{Makefile---Applications--Hook}>} @equiv{}
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} @equiv{}
 @example
-
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/lib/File/Slurp.pm; printf "$@{CLEAR@}";
 @end example
 @iftex
 @smallfonts @rm
 @end iftex
 
 @noindent
-This chunk is called by @r{<@i{Makefile---Applications}>}; see its first definition at @ref{Makefile---Applications}.
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5},
+@ref{Makefile---Applications--Syntax-Checks-Hook-6}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
 @iftex
 @textfonts @rm
 @end iftex
@@ -1635,14 +1822,14 @@ This chunk is called by @r{<@i{Makefile---Applications}>}; see its first definit
 
 @need 400
 @anchor{Package---File--Slurp-Code}
+@crindex @r{<@i{Use Strict Warnings}>}, use
 @cdindex @r{<@i{Package---File--Slurp-Code}>}, definition
 @noindent
 @r{<@i{Package---File--Slurp-Code}>} @equiv{}
 @example
 package File::Slurp;
 
-use strict;
-use warnings ;
+@r{<@i{Use Strict Warnings}>}
 
 our $VERSION = '9999.24';
 $VERSION = eval $VERSION;
@@ -2418,6 +2605,10 @@ __END__
 
 @noindent
 This chunk is called by @r{@{@file{Slurp.pm}@}}; see its first definition at @ref{Slurp-pm}.
+
+@noindent
+The called chunk @r{<@i{Use Strict Warnings}>} is first defined at
+@ref{Use-Strict-Warnings}.
 @iftex
 @textfonts @rm
 @end iftex
@@ -2953,19 +3144,12 @@ This chunk is called by @r{@{@file{Slurp.pm}@}}; see its first definition at @re
 
 @c .....................................
 
-@node File-Slurp Tests, FileSlurpTest Code, File-Slurp Code, About File-Slurp
+@node File-Slurp Tests, Test FileSlurpTest, File-Slurp Code, About File-Slurp
 @subsection @file{File::Slurp} Tests
 @cindex @file{File::Slurp} tests
 @cindex tests of @file{File::Slurp}
 
-@c _____________________________________
-
-@menu
-* List of Tests for File-Slurp::
-@end menu
-
-@node List of Tests for File-Slurp,  , File-Slurp Tests, File-Slurp Tests
-@subsubsection List of Tests for @file{File::Slurp}
+@heading List of Tests for File-Slurp
 
 @verbatim
 t/00-report-prereqs.t
@@ -3010,17 +3194,21 @@ xt/author/test-version.t
 
 @c .....................................
 
-@node FileSlurpTest Code,  , File-Slurp Tests, About File-Slurp
-@subsection FileSlurpTest Code
+@node Test FileSlurpTest, FileSlurpTestOverride Code, File-Slurp Tests, About File-Slurp
+@subsection Test FileSlurpTest
 @cindex @file{File::Slurp} FileSlurpTest code
 
 @need 400
 @anchor{FileSlurpTest-pm}
+@crindex @r{<@i{Use File-Spec Basename}>}, use
+@crindex @r{<@i{Use TWJR Lib}>}, use
 @crindex @r{<@i{Test---FileSlurp--FileSlurpTest}>}, use
 @cdindex @r{@{@file{FileSlurpTest.pm}@}}, definition
 @noindent
 @r{@{@file{FileSlurpTest.pm}@}} @equiv{}
 @example
+@r{<@i{Use File-Spec Basename}>}
+@r{<@i{Use TWJR Lib}>}
 @r{<@i{Test---FileSlurp--FileSlurpTest}>}
 @end example
 @iftex
@@ -3028,12 +3216,44 @@ xt/author/test-version.t
 @end iftex
 
 @noindent
-The called chunk @r{<@i{Test---FileSlurp--FileSlurpTest}>} is first defined at
-@ref{Test---FileSlurp--FileSlurpTest}.
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{Test---FileSlurp--FileSlurpTest}>} @tab See @ref{Test---FileSlurp--FileSlurpTest}.
+@item @r{<@i{Use File-Spec Basename}>} @tab See @ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use TWJR Lib}>} @tab See @ref{Use-TWJR-Lib}.
+@end multitable
 @iftex
 @textfonts @rm
 @end iftex
 
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks-Hook-2}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} +@equiv{}
+@example
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/t/lib/FileSlurpTest.pm; printf "$@{CLEAR@}";
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5},
+@ref{Makefile---Applications--Syntax-Checks-Hook-6}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
+@iftex
+@textfonts @rm
+@end iftex
 
 @c _____________________________________
 
@@ -3041,22 +3261,22 @@ The called chunk @r{<@i{Test---FileSlurp--FileSlurpTest}>} is first defined at
 * FileSlurpTest Code Body::
 @end menu
 
-@node FileSlurpTest Code Body,  , FileSlurpTest Code, FileSlurpTest Code
+@node FileSlurpTest Code Body,  , Test FileSlurpTest, Test FileSlurpTest
 @subsubsection FileSlurpTest Code Body
 
 @need 400
 @anchor{Test---FileSlurp--FileSlurpTest}
+@crindex @r{<@i{Use Strict Warnings}>}, use
 @cdindex @r{<@i{Test---FileSlurp--FileSlurpTest}>}, definition
 @noindent
 @r{<@i{Test---FileSlurp--FileSlurpTest}>} @equiv{}
 @example
 package FileSlurpTest;
 
-use strict;
-use warnings;
+@r{<@i{Use Strict Warnings}>}
 use Exporter qw(import);
 use IO::Handle ();
-use File::Spec ();
+use File::Spec;
 use File::Temp qw(tempfile);
 
 use File::Slurp ();
@@ -3130,10 +3350,1535 @@ sub trap_function_list_context @{
 
 @noindent
 This chunk is called by @r{@{@file{FileSlurpTest.pm}@}}; see its first definition at @ref{FileSlurpTest-pm}.
+
+@noindent
+The called chunk @r{<@i{Use Strict Warnings}>} is first defined at
+@ref{Use-Strict-Warnings}.
 @iftex
 @textfonts @rm
 @end iftex
 
+
+@c .....................................
+
+@node FileSlurpTestOverride Code, Test 00-report-prereqs.dd, Test FileSlurpTest, About File-Slurp
+@subsection @file{FileSlurpTestOverride.pm} Code
+@file{FileSlurpTestOverride.pm} code
+
+@need 400
+@anchor{FileSlurpTestOverride-pm}
+@cdindex @r{@{@file{FileSlurpTestOverride.pm}@}}, definition
+@noindent
+@r{@{@file{FileSlurpTestOverride.pm}@}} @equiv{}
+@example
+package FileSlurpTestOverride;
+
+use Exporter qw(import);
+
+# older EUMMs turn this on. We don't want to emit warnings.
+# also, some of our CORE function overrides emit warnings. Silence those.
+local $^W;
+
+BEGIN @{
+    *CORE::GLOBAL::rename = sub($$) @{ my ($o, $n) = @@_; CORE::rename($o, $n) @};
+    # we only use the 4-arg version of syswrite
+    *CORE::GLOBAL::syswrite = sub($$;$$) @{ my ($h, $buff, $l, $o) = @@_; return CORE::syswrite($h, $buff, $l, $o); @};
+    # We use the 3 and 4-arg form of sysread.
+    *CORE::GLOBAL::sysread = sub($$$;$) @{ my( $h, $b, $s, $o ) = @@_; CORE::sysread $h, $b, $s, $o @};
+            # sub($$$;$) @{ my( $h, $b, $s, $o ) = @@_; CORE::sysread $h, $b, $s, $o @} ;
+    # We use the 3 and 4-arg form of sysopen
+    *CORE::GLOBAL::sysopen = sub($$$;$) @{ my( $h, $n, $m, $p ) = @@_; CORE::sysopen $h, $n, $m, $p @};
+    # sub(*$$;$) @{
+    #     my ($h, $n, $m, $p) = @@_;
+    #     return CORE::sysopen($h, $n, $m, $p) if defined $p;
+    #     CORE::sysopen($h, $n, $m);
+    # @};
+@}
+
+
+our @@EXPORT_OK = qw(
+    trap_function_override_core
+);
+
+sub trap_function_override_core @{
+    my ($core, $function, @@args) = @@_;
+
+    my $res;
+    my $warn;
+    my $err = do @{ # catch
+        no strict 'refs';
+        no warnings;
+        local $^W;
+        local $@@;
+        local $SIG@{__WARN__@} = sub @{$warn = join '', @@_@};
+        local *@{"CORE::GLOBAL::$core"@} = sub @{@};
+        eval @{ # try
+            $res = $function->(@@args);
+            1;
+        @};
+        $@@;
+    @};
+
+    return ($res, $warn, $err);
+@}
+
+1;
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks-Hook-3}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} +@equiv{}
+@example
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/t/lib/FileSlurpTestOverride.pm; printf "$@{CLEAR@}";
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5},
+@ref{Makefile---Applications--Syntax-Checks-Hook-6}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c .....................................
+
+@node Test 00-report-prereqs.dd, Test 00-report-prereqs.t, FileSlurpTestOverride Code, About File-Slurp
+@subsection Test @file{t/00-report-prereqs.dd}
+@cindex @file{t/00-report-prereqs.t}
+
+@need 400
+@anchor{00-report-prereqs-dd}
+@crindex @r{<@i{00-report-prereqs.dd--Body}>}, use
+@cdindex @r{@{@file{00-report-prereqs.dd}@}}, definition
+@noindent
+@r{@{@file{00-report-prereqs.dd}@}} @equiv{}
+@example
+@r{<@i{00-report-prereqs.dd--Body}>}
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+The called chunk @r{<@i{00-report-prereqs.dd--Body}>} is first defined at
+@ref{00-report-prereqs-dd--Body}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@menu
+* 00-report-prereqs.dd Body::
+@end menu
+
+@node 00-report-prereqs.dd Body,  , Test 00-report-prereqs.dd, Test 00-report-prereqs.dd
+@subsubsection 00-report-prereqs.dd Body
+
+@need 400
+@anchor{00-report-prereqs-dd--Body}
+@cdindex @r{<@i{00-report-prereqs.dd--Body}>}, definition
+@noindent
+@r{<@i{00-report-prereqs.dd--Body}>} @equiv{}
+@example
+do @{ my $x = @{
+       'build' => @{
+                    'requires' => @{
+                                    'ExtUtils::MakeMaker' => '0',
+                                  @}
+                  @},
+       'configure' => @{
+                        'requires' => @{
+                                        'ExtUtils::MakeMaker' => '0'
+                                      @}
+                      @},
+       'runtime' => @{
+                      'requires' => @{
+                                      'B' => '0',
+                                      'Carp' => '0',
+                                      'Errno' => '0',
+                                      'Exporter' => '5.57',
+                                      'Fcntl' => '0',
+                                      'POSIX' => '0',
+                                      'strict' => '0',
+                                      'warnings' => '0'
+                                    @}
+                    @},
+       'test' => @{
+                   'requires' => @{
+                                   'Carp' => '0',
+                                   'Exporter' => '5.57',
+                                   'Fcntl' => '0',
+                                   'File::Basename' => '0',
+                                   'File::Spec' => '3.01',
+                                   'File::Temp' => '0',
+                                   'IO::Handle' => '0',
+                                   'POSIX' => '0',
+                                   'Scalar::Util' => '1.00',
+                                   'Socket' => '0',
+                                   'Symbol' => '0',
+                                   'Test::More' => '0',
+                                   'overload' => '0',
+                                   'strict' => '0',
+                                   'warnings' => '0'
+                                 @}
+                 @}
+     @};
+  $x;
+ @}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{00-report-prereqs.dd}@}}; see its first definition at @ref{00-report-prereqs-dd}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+
+@c .....................................
+
+@node Test 00-report-prereqs.t, Test 01-error_edit_file.t, Test 00-report-prereqs.dd, About File-Slurp
+@subsection Test@file{00-report-prereqs.t}
+@cindex @file{/00-report-prereqs.t}
+
+@need 400
+@anchor{00-report-prereqs-t}
+@crindex @r{<@i{00-report-prereqs.t---Body}>}, use
+@cdindex @r{@{@file{00-report-prereqs.t}@}}, definition
+@noindent
+@r{@{@file{00-report-prereqs.t}@}} @equiv{}
+@example
+@r{<@i{00-report-prereqs.t---Body}>}
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+The called chunk @r{<@i{00-report-prereqs.t---Body}>} is first defined at
+@ref{00-report-prereqs-t---Body}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@menu
+* 00-report-prereqs.t Body::
+@end menu
+
+@node 00-report-prereqs.t Body,  , Test 00-report-prereqs.t, Test 00-report-prereqs.t
+@subsubsection @file{00-report-prereqs.t} Body
+@cindex @file{00-report-prereqs.t}
+
+@need 400
+@anchor{00-report-prereqs-t---Body}
+@crindex @r{<@i{Use Strict Warnings}>}, use
+@cdindex @r{<@i{00-report-prereqs.t---Body}>}, definition
+@noindent
+@r{<@i{00-report-prereqs.t---Body}>} @equiv{}
+@example
+#!perl
+
+@r{<@i{Use Strict Warnings}>}
+
+# This test was generated by Dist::Zilla::Plugin::Test::ReportPrereqs 0.027
+
+use Test::More tests => 1;
+
+use ExtUtils::MakeMaker;
+use File::Spec;
+
+# from $version::LAX
+my $lax_version_re =
+    qr/(?: undef | (?: (?:[0-9]+) (?: \. | (?:\.[0-9]+) (?:_[0-9]+)? )?
+            |
+            (?:\.[0-9]+) (?:_[0-9]+)?
+        ) | (?:
+            v (?:[0-9]+) (?: (?:\.[0-9]+)+ (?:_[0-9]+)? )?
+            |
+            (?:[0-9]+)? (?:\.[0-9]+)@{2,@} (?:_[0-9]+)?
+        )
+    )/x;
+
+# hide optional CPAN::Meta modules from prereq scanner
+# and check if they are available
+my $cpan_meta = "CPAN::Meta";
+my $cpan_meta_pre = "CPAN::Meta::Prereqs";
+my $HAS_CPAN_META = eval "require $cpan_meta; $cpan_meta->VERSION('2.120900')" && eval "require $cpan_meta_pre"; ## no critic
+
+# Verify requirements?
+my $DO_VERIFY_PREREQS = 1;
+
+sub _max @{
+    my $max = shift;
+    $max = ( $_ > $max ) ? $_ : $max for @@_;
+    return $max;
+@}
+
+sub _merge_prereqs @{
+    my ($collector, $prereqs) = @@_;
+
+    # CPAN::Meta::Prereqs object
+    if (ref $collector eq $cpan_meta_pre) @{
+        return $collector->with_merged_prereqs(
+            CPAN::Meta::Prereqs->new( $prereqs )
+        );
+    @}
+
+    # Raw hashrefs
+    for my $phase ( keys %$prereqs ) @{
+        for my $type ( keys %@{ $prereqs->@{$phase@} @} ) @{
+            for my $module ( keys %@{ $prereqs->@{$phase@}@{$type@} @} ) @{
+                $collector->@{$phase@}@{$type@}@{$module@} = $prereqs->@{$phase@}@{$type@}@{$module@};
+            @}
+        @}
+    @}
+
+    return $collector;
+@}
+
+my @@include = qw(
+
+);
+
+my @@exclude = qw(
+
+);
+
+# Add static prereqs to the included modules list
+my $static_prereqs = do './t/00-report-prereqs.dd';
+
+# Merge all prereqs (either with ::Prereqs or a hashref)
+my $full_prereqs = _merge_prereqs(
+    ( $HAS_CPAN_META ? $cpan_meta_pre->new : @{@} ),
+    $static_prereqs
+);
+
+# Add dynamic prereqs to the included modules list (if we can)
+my ($source) = grep @{ -f @} 'MYMETA.json', 'MYMETA.yml';
+my $cpan_meta_error;
+if ( $source && $HAS_CPAN_META
+    && (my $meta = eval @{ CPAN::Meta->load_file($source) @} )
+) @{
+    $full_prereqs = _merge_prereqs($full_prereqs, $meta->prereqs);
+@}
+else @{
+    $cpan_meta_error = $@@;    # capture error from CPAN::Meta->load_file($source)
+    $source = 'static metadata';
+@}
+
+my @@full_reports;
+my @@dep_errors;
+my $req_hash = $HAS_CPAN_META ? $full_prereqs->as_string_hash : $full_prereqs;
+
+# Add static includes into a fake section
+for my $mod (@@include) @{
+    $req_hash->@{other@}@{modules@}@{$mod@} = 0;
+@}
+
+for my $phase ( qw(configure build test runtime develop other) ) @{
+    next unless $req_hash->@{$phase@};
+    next if ($phase eq 'develop' and not $ENV@{AUTHOR_TESTING@});
+
+    for my $type ( qw(requires recommends suggests conflicts modules) ) @{
+        next unless $req_hash->@{$phase@}@{$type@};
+
+        my $title = ucfirst($phase).' '.ucfirst($type);
+        my @@reports = [qw/Module Want Have/];
+
+        for my $mod ( sort keys %@{ $req_hash->@{$phase@}@{$type@} @} ) @{
+            next if $mod eq 'perl';
+            next if grep @{ $_ eq $mod @} @@exclude;
+
+            my $file = $mod;
+            $file =~ s@{::@}@{/@}g;
+            $file .= ".pm";
+            my ($prefix) = grep @{ -e File::Spec->catfile($_, $file) @} @@INC;
+
+            my $want = $req_hash->@{$phase@}@{$type@}@{$mod@};
+            $want = "undef" unless defined $want;
+            $want = "any" if !$want && $want == 0;
+
+            my $req_string = $want eq 'any' ? 'any version required' : "version '$want' required";
+
+            if ($prefix) @{
+                my $have = MM->parse_version( File::Spec->catfile($prefix, $file) );
+                $have = "undef" unless defined $have;
+                push @@reports, [$mod, $want, $have];
+
+                if ( $DO_VERIFY_PREREQS && $HAS_CPAN_META && $type eq 'requires' ) @{
+                    if ( $have !~ /\A$lax_version_re\z/ ) @{
+                        push @@dep_errors, "$mod version '$have' cannot be parsed ($req_string)";
+                    @}
+                    elsif ( ! $full_prereqs->requirements_for( $phase, $type )->accepts_module( $mod => $have ) ) @{
+                        push @@dep_errors, "$mod version '$have' is not in required range '$want'";
+                    @}
+                @}
+            @}
+            else @{
+                push @@reports, [$mod, $want, "missing"];
+
+                if ( $DO_VERIFY_PREREQS && $type eq 'requires' ) @{
+                    push @@dep_errors, "$mod is not installed ($req_string)";
+                @}
+            @}
+        @}
+
+        if ( @@reports ) @{
+            push @@full_reports, "=== $title ===\n\n";
+
+            my $ml = _max( map @{ length $_->[0] @} @@reports );
+            my $wl = _max( map @{ length $_->[1] @} @@reports );
+            my $hl = _max( map @{ length $_->[2] @} @@reports );
+
+            if ($type eq 'modules') @{
+                splice @@reports, 1, 0, ["-" x $ml, "", "-" x $hl];
+                push @@full_reports, map @{ sprintf("    %*s %*s\n", -$ml, $_->[0], $hl, $_->[2]) @} @@reports;
+            @}
+            else @{
+                splice @@reports, 1, 0, ["-" x $ml, "-" x $wl, "-" x $hl];
+                push @@full_reports, map @{ sprintf("    %*s %*s %*s\n", -$ml, $_->[0], $wl, $_->[1], $hl, $_->[2]) @} @@reports;
+            @}
+
+            push @@full_reports, "\n";
+        @}
+    @}
+@}
+
+if ( @@full_reports ) @{
+    diag "\nVersions for all modules listed in $source (including optional ones):\n\n", @@full_reports;
+@}
+
+if ( $cpan_meta_error || @@dep_errors ) @{
+    diag "\n*** WARNING WARNING WARNING WARNING WARNING WARNING WARNING WARNING ***\n";
+@}
+
+if ( $cpan_meta_error ) @{
+    my ($orig_source) = grep @{ -f @} 'MYMETA.json', 'MYMETA.yml';
+    diag "\nCPAN::Meta->load_file('$orig_source') failed with: $cpan_meta_error\n";
+@}
+
+if ( @@dep_errors ) @{
+    diag join("\n",
+        "\nThe following REQUIRED prerequisites were not satisfied:\n",
+        @@dep_errors,
+        "\n"
+    );
+@}
+
+pass;
+
+# vim: ts=4 sts=4 sw=4 et:
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{00-report-prereqs.t}@}}; see its first definition at @ref{00-report-prereqs-t}.
+
+@noindent
+The called chunk @r{<@i{Use Strict Warnings}>} is first defined at
+@ref{Use-Strict-Warnings}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+
+@c .....................................
+
+@node Test 01-error_edit_file.t, 01-error_edit_file_lines.t Test, Test 00-report-prereqs.t, About File-Slurp
+@subsection Test @file{01-error_edit_file.t}
+@cindex @file{01-error_edit_file.t}
+
+@need 400
+@anchor{01-error-edit-file-t}
+@crindex @r{<@i{Use Strict Warnings}>}, use
+@crindex @r{<@i{Use File-Spec Basename}>}, use
+@crindex @r{<@i{Use TWJR Lib}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body}>}, use
+@cdindex @r{@{@file{01-error_edit_file.t}@}}, definition
+@noindent
+@r{@{@file{01-error_edit_file.t}@}} @equiv{}
+@example
+@r{<@i{Use Strict Warnings}>}
+@r{<@i{Use File-Spec Basename}>}
+@r{<@i{Use TWJR Lib}>}
+
+@r{<@i{01-error_edit_file.t---Body}>}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{<@i{Use File-Spec Basename}>} @tab See @ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use Strict Warnings}>} @tab See @ref{Use-Strict-Warnings}.
+@item @r{<@i{Use TWJR Lib}>} @tab See @ref{Use-TWJR-Lib}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks-Hook-4}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} +@equiv{}
+@example
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/t/01-error_edit_file.t; printf "$@{CLEAR@}";
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5},
+@ref{Makefile---Applications--Syntax-Checks-Hook-6}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c _____________________________________
+
+@menu
+* 01-error_edit_file.t Body::
+* 01-error_edit_file.t---Body--Use::
+* 01-error_edit_file.t---Body--Plan Tests::
+* 01-error_edit_file.t---Body--Edit File Error::
+* 01-error_edit_file.t---Body--# of Error::
+@end menu
+
+@node 01-error_edit_file.t Body, 01-error_edit_file.t---Body--Use, Test 01-error_edit_file.t, Test 01-error_edit_file.t
+@subsubsection @file{01-error_edit_file.t} Body
+@cindex @file{01-error_edit_file.t} Body
+
+@need 400
+@anchor{01-error-edit-file-t---Body}
+@crindex @r{<@i{01-error_edit_file.t---Body--Use}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--Plan Tests}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--# of Error}>}, use
+@cdindex @r{<@i{01-error_edit_file.t---Body}>}, definition
+@noindent
+@r{<@i{01-error_edit_file.t---Body}>} @equiv{}
+@example
+@r{<@i{01-error_edit_file.t---Body--Use}>}
+use File::Slurp qw(ef edit_file);
+@r{<@i{01-error_edit_file.t---Body--Plan Tests}>}
+
+# edit_file errors
+@{
+  @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}
+@}
+
+# ef errors
+@{
+  @r{<@i{01-error_edit_file.t---Body--# of Error}>}
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{01-error_edit_file.t}@}}; see its first definition at @ref{01-error-edit-file-t}.
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body--# of Error}>} @tab See @ref{01-error-edit-file-t---Body----of-Error}.
+@item @r{<@i{01-error_edit_file.t---Body--Edit File Error}>} @tab See @ref{01-error-edit-file-t---Body--Edit-File-Error}.
+@item @r{<@i{01-error_edit_file.t---Body--Plan Tests}>} @tab See @ref{01-error-edit-file-t---Body--Plan-Tests}.
+@item @r{<@i{01-error_edit_file.t---Body--Use}>} @tab See @ref{01-error-edit-file-t---Body--Use}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_edit_file.t---Body--Use, 01-error_edit_file.t---Body--Plan Tests, 01-error_edit_file.t Body, Test 01-error_edit_file.t
+@subsubsection 01-error_edit_file.t---Body--Use
+
+@need 400
+@anchor{01-error-edit-file-t---Body--Use}
+@cdindex @r{<@i{01-error_edit_file.t---Body--Use}>}, definition
+@noindent
+@r{<@i{01-error_edit_file.t---Body--Use}>} @equiv{}
+@example
+use File::Basename ();
+use lib (File::Spec->catdir(File::Spec->rel2abs(File::Basename::dirname(__FILE__)), 'lib'));
+use FileSlurpTest qw(temp_file_path trap_function);
+
+# both of these names are synonyms
+use Test::More;
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_edit_file.t---Body--Plan Tests, 01-error_edit_file.t---Body--Edit File Error, 01-error_edit_file.t---Body--Use, Test 01-error_edit_file.t
+@subsubsection 01-error_edit_file.t---Body--Plan Tests
+
+@need 400
+@anchor{01-error-edit-file-t---Body--Plan-Tests}
+@cdindex @r{<@i{01-error_edit_file.t---Body--Plan Tests}>}, definition
+@noindent
+@r{<@i{01-error_edit_file.t---Body--Plan Tests}>} @equiv{}
+@example
+plan tests => 18;
+
+# this one intentionally doesn't exist on a couple of paths. can't be created.
+my $file = temp_file_path('gimme a nonexistent path');
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c _____________________________________
+
+@node 01-error_edit_file.t---Body--Edit File Error, 01-error_edit_file.t---Body--# of Error, 01-error_edit_file.t---Body--Plan Tests, Test 01-error_edit_file.t
+@subsubsection 01-error_edit_file.t---Body--Edit File Error
+
+
+@need 400
+@anchor{01-error-edit-file-t---Body--Edit-File-Error}
+@cdindex @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}, definition
+@noindent
+@r{<@i{01-error_edit_file.t---Body--Edit File Error}>} @equiv{}
+@example
+my ($res, $warn, $err) = trap_function(\&edit_file, sub @{ s/foo/bar/g @}, $file, @{err_mode => 'quiet'@});
+ok(!$warn, 'edit_file: err_mode opt quiet - no warn!');
+ok(!$err, 'edit_file: err_mode opt quiet - no exception!');
+ok(!$res, 'edit_file: err_mode opt quiet - no content!');
+($res, $warn, $err) = trap_function(\&edit_file, sub @{ s/foo/bar/g @}, $file, @{err_mode => 'carp'@});
+ok($warn, 'edit_file: err_mode opt carp - got warn!');
+ok(!$err, 'edit_file: err_mode opt carp - no exception!');
+ok(!$res, 'edit_file: err_mode opt carp - no content!');
+($res, $warn, $err) = trap_function(\&edit_file, sub @{ s/foo/bar/g @}, $file, @{err_mode => 'croak'@});
+ok(!$warn, 'edit_file: err_mode opt croak - no warn!');
+ok($err, 'edit_file: err_mode opt croak - got exception!');
+ok(!$res, 'edit_file: err_mode opt croak - no content!');
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_edit_file.t---Body--# of Error,  , 01-error_edit_file.t---Body--Edit File Error, Test 01-error_edit_file.t
+@subsubsection 01-error_edit_file.t---Body--# of Error
+
+@need 400
+@anchor{01-error-edit-file-t---Body----of-Error}
+@cdindex @r{<@i{01-error_edit_file.t---Body--# of Error}>}, definition
+@noindent
+@r{<@i{01-error_edit_file.t---Body--# of Error}>} @equiv{}
+@example
+my ($res, $warn, $err) = trap_function(\&ef, sub @{ s/foo/bar/g @}, $file, @{err_mode => 'quiet'@});
+ok(!$warn, 'ef: err_mode opt quiet - no warn!');
+ok(!$err, 'ef: err_mode opt quiet - no exception!');
+ok(!$res, 'ef: err_mode opt quiet - no content!');
+($res, $warn, $err) = trap_function(\&ef, sub @{ s/foo/bar/g @}, $file, @{err_mode => 'carp'@});
+ok($warn, 'ef: err_mode opt carp - got warn!');
+ok(!$err, 'ef: err_mode opt carp - no exception!');
+ok(!$res, 'ef: err_mode opt carp - no content!');
+($res, $warn, $err) = trap_function(\&ef, sub @{ s/foo/bar/g @}, $file, @{err_mode => 'croak'@});
+ok(!$warn, 'ef: err_mode opt croak - no warn!');
+ok($err, 'ef: err_mode opt croak - got exception!');
+ok(!$res, 'ef: err_mode opt croak - no content!');
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c .....................................
+
+@node 01-error_edit_file_lines.t Test, 01-error_prepend_file.t Test, Test 01-error_edit_file.t, About File-Slurp
+@subsection @file{01-error_edit_file_lines.t} Test
+@cindex @file{01-error_edit_file_lines.t} test
+
+@need 400
+@anchor{01-error-edit-file-lines-t}
+@crindex @r{<@i{Use Strict Warnings}>}, use
+@crindex @r{<@i{Use File-Spec Basename}>}, use
+@crindex @r{<@i{Use TWJR Lib}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--Use}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--Plan Tests}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}, use
+@crindex @r{<@i{01-error_edit_file.t---Body--# of Error}>}, use
+@cdindex @r{@{@file{01-error_edit_file_lines.t}@}}, definition
+@noindent
+@r{@{@file{01-error_edit_file_lines.t}@}} @equiv{}
+@example
+@r{<@i{Use Strict Warnings}>}
+@r{<@i{Use File-Spec Basename}>}
+@r{<@i{Use TWJR Lib}>}
+
+@r{<@i{01-error_edit_file.t---Body--Use}>}
+use File::Slurp qw(ef edit_file);
+
+@r{<@i{01-error_edit_file.t---Body--Plan Tests}>}
+
+# edit_file_lines errors
+@{
+  @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}
+@}
+
+# efl errors
+@{
+  @r{<@i{01-error_edit_file.t---Body--# of Error}>}
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body--# of Error}>} @tab See @ref{01-error-edit-file-t---Body----of-Error}.
+@item @r{<@i{01-error_edit_file.t---Body--Edit File Error}>} @tab See @ref{01-error-edit-file-t---Body--Edit-File-Error}.
+@item @r{<@i{01-error_edit_file.t---Body--Plan Tests}>} @tab See @ref{01-error-edit-file-t---Body--Plan-Tests}.
+@item @r{<@i{01-error_edit_file.t---Body--Use}>} @tab See @ref{01-error-edit-file-t---Body--Use}.
+@item @r{<@i{Use File-Spec Basename}>} @tab See @ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use Strict Warnings}>} @tab See @ref{Use-Strict-Warnings}.
+@item @r{<@i{Use TWJR Lib}>} @tab See @ref{Use-TWJR-Lib}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks-Hook-5}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} +@equiv{}
+@example
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/t/01-error_edit_file_lines.t; printf "$@{CLEAR@}";
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-6}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c .....................................
+
+@node 01-error_prepend_file.t Test, edit_file.t Test, 01-error_edit_file_lines.t Test, About File-Slurp
+@subsection @file{01-error_prepend_file.t} Test
+@cindex @file{01-error_prepend_file.t} test
+
+@need 400
+@anchor{01-error-prepend-file-t}
+@crindex @r{<@i{Use Strict Warnings}>}, use
+@crindex @r{<@i{Use File-Spec Basename}>}, use
+@crindex @r{<@i{Use TWJR Lib}>}, use
+@crindex @r{<@i{01-error_prepend_file.t---Body}>}, use
+@cdindex @r{@{@file{01-error_prepend_file.t}@}}, definition
+@noindent
+@r{@{@file{01-error_prepend_file.t}@}} @equiv{}
+@example
+@r{<@i{Use Strict Warnings}>}
+@r{<@i{Use File-Spec Basename}>}
+@r{<@i{Use TWJR Lib}>}
+@r{<@i{01-error_prepend_file.t---Body}>}
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_prepend_file.t---Body}>} @tab See @ref{01-error-prepend-file-t---Body}.
+@item @r{<@i{Use File-Spec Basename}>} @tab See @ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use Strict Warnings}>} @tab See @ref{Use-Strict-Warnings}.
+@item @r{<@i{Use TWJR Lib}>} @tab See @ref{Use-TWJR-Lib}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks-Hook-6}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} +@equiv{}
+@example
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/t/01-error_prepend_file.t; printf "$@{CLEAR@}";
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@menu
+* 01-error_prepend_file.t---Body Code::
+* 01-error_prepend_file.t---Body--Use Code::
+* 01-error_prepend_file.t---Body--Test-More Code::
+* 01-error_prepend_file.t---Body--Warnings Off Code::
+* 01-error_prepend_file.t---Body--Tests Code::
+* 01-error_prepend_file.t---Step 1 Code::
+* 01-error_prepend_file.t---Step 2 Code::
+* 01-error_prepend_file.t---Step 3 Code::
+@end menu
+
+@node 01-error_prepend_file.t---Body Code, 01-error_prepend_file.t---Body--Use Code, 01-error_prepend_file.t Test, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Body Code
+
+@need 400
+@anchor{01-error-prepend-file-t---Body}
+@crindex @r{<@i{01-error_prepend_file.t---Body--Use}>}, use
+@crindex @r{<@i{01-error_prepend_file.t---Body--Test-More}>}, use
+@crindex @r{<@i{01-error_prepend_file.t---Body--Warnings Off}>}, use
+@crindex @r{<@i{01-error_prepend_file.t---Body--Tests}>}, use
+@cdindex @r{<@i{01-error_prepend_file.t---Body}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Body}>} @equiv{}
+@example
+@r{<@i{01-error_prepend_file.t---Body--Use}>}
+@r{<@i{01-error_prepend_file.t---Body--Test-More}>}
+@r{<@i{01-error_prepend_file.t---Body--Warnings Off}>}
+@r{<@i{01-error_prepend_file.t---Body--Tests}>}
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{01-error_prepend_file.t}@}}; see its first definition at @ref{01-error-prepend-file-t}.
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_prepend_file.t---Body--Test-More}>} @tab See @ref{01-error-prepend-file-t---Body--Test-More}.
+@item @r{<@i{01-error_prepend_file.t---Body--Tests}>} @tab See @ref{01-error-prepend-file-t---Body--Tests}.
+@item @r{<@i{01-error_prepend_file.t---Body--Use}>} @tab See @ref{01-error-prepend-file-t---Body--Use}.
+@item @r{<@i{01-error_prepend_file.t---Body--Warnings Off}>} @tab See @ref{01-error-prepend-file-t---Body--Warnings-Off}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Body--Use Code, 01-error_prepend_file.t---Body--Test-More Code, 01-error_prepend_file.t---Body Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Body--Use Code
+
+@need 400
+@anchor{01-error-prepend-file-t---Body--Use}
+@cdindex @r{<@i{01-error_prepend_file.t---Body--Use}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Body--Use}>} @equiv{}
+@example
+use lib File::Spec->catdir(File::Spec->rel2abs(File::Basename::dirname(__FILE__)), 'lib');
+use FileSlurpTestOverride qw(trap_function_override_core);
+use FileSlurpTest qw(temp_file_path trap_function);
+
+use File::Slurp qw(prepend_file);
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Body--Test-More Code, 01-error_prepend_file.t---Body--Warnings Off Code, 01-error_prepend_file.t---Body--Use Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Body--Test-More Code
+
+@need 400
+@anchor{01-error-prepend-file-t---Body--Test-More}
+@cdindex @r{<@i{01-error_prepend_file.t---Body--Test-More}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Body--Test-More}>} @equiv{}
+@example
+use Test::More;
+
+plan tests => 27;
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Body--Warnings Off Code, 01-error_prepend_file.t---Body--Tests Code, 01-error_prepend_file.t---Body--Test-More Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Body--Warnings Off Code
+
+@need 400
+@anchor{01-error-prepend-file-t---Body--Warnings-Off}
+@cdindex @r{<@i{01-error_prepend_file.t---Body--Warnings Off}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Body--Warnings Off}>} @equiv{}
+@example
+# older EUMMs turn this on. We don't want to emit warnings.
+# also, some of our CORE function overrides emit warnings. Silence those.
+local $^W;
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Body--Tests Code, 01-error_prepend_file.t---Step 1 Code, 01-error_prepend_file.t---Body--Warnings Off Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Body--Tests Code
+
+@need 400
+@anchor{01-error-prepend-file-t---Body--Tests}
+@crindex @r{<@i{01-error_prepend_file.t---Step 1}>}, use
+@crindex @r{<@i{01-error_prepend_file.t---Step 2}>}, use
+@crindex @r{<@i{01-error_prepend_file.t---Step 3}>}, use
+@cdindex @r{<@i{01-error_prepend_file.t---Body--Tests}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Body--Tests}>} @equiv{}
+@example
+# prepend_file reads in a file, edits the contents, writes the new file
+# atomically to "foo.$$" then renames "foo.$$" to the original "foo"
+# this leaves many failure steps to tend to
+
+@r{<@i{01-error_prepend_file.t---Step 1}>}
+@r{<@i{01-error_prepend_file.t---Step 2}>}
+@r{<@i{01-error_prepend_file.t---Step 3}>}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_prepend_file.t---Step 1}>} @tab See @ref{01-error-prepend-file-t---Step-1}.
+@item @r{<@i{01-error_prepend_file.t---Step 2}>} @tab See @ref{01-error-prepend-file-t---Step-2}.
+@item @r{<@i{01-error_prepend_file.t---Step 3}>} @tab See @ref{01-error-prepend-file-t---Step-3}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Step 1 Code, 01-error_prepend_file.t---Step 2 Code, 01-error_prepend_file.t---Body--Tests Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Step 1
+
+@need 400
+@anchor{01-error-prepend-file-t---Step-1}
+@cdindex @r{<@i{01-error_prepend_file.t---Step 1}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Step 1}>} @equiv{}
+@example
+# step 1: read in the file. error simulated by asking it to read-in a
+# nonexistent file
+@{
+    # this one intentionally doesn't exist on a couple of paths. can't be created.
+    my $file = temp_file_path('gimme a nonexistent path');
+    my ($res, $warn, $err) = trap_function(\&prepend_file, $file, @{err_mode => 'quiet'@}, 'junk');
+    ok(!$warn, 'prepend_file: read: err_mode opt quiet - no warn!');
+    ok(!$err, 'prepend_file: read: err_mode opt quiet - no exception!');
+    ok(!$res, 'prepend_file: read: err_mode opt quiet - no content!');
+    ($res, $warn, $err) = trap_function(\&prepend_file, $file, @{err_mode => 'carp'@}, 'junk');
+    like($warn, qr/read_file/, 'prepend_file: read: err_mode opt carp - got warn!');
+    ok(!$err, 'prepend_file: read: err_mode opt carp - no exception!');
+    ok(!$res, 'prepend_file: read: err_mode opt carp - no content!');
+    ($res, $warn, $err) = trap_function(\&prepend_file, $file, @{err_mode => 'croak'@}, 'junk');
+    ok(!$warn, 'prepend_file: read: err_mode opt croak - no warn!');
+    like($err, qr/read_file/, 'prepend_file: read: err_mode opt croak - got exception!');
+    ok(!$res, 'prepend_file: read: err_mode opt croak - no content!');
+@}
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body--Tests}>}; see its first definition at @ref{01-error-prepend-file-t---Body--Tests}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Step 2 Code, 01-error_prepend_file.t---Step 3 Code, 01-error_prepend_file.t---Step 1 Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Step 2
+
+@need 400
+@anchor{01-error-prepend-file-t---Step-2}
+@cdindex @r{<@i{01-error_prepend_file.t---Step 2}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Step 2}>} @equiv{}
+@example
+# step 2: Allow step 1 to pass, then write out the newly altered contents to a
+# a file called "foo.$$". This write will fail by simulating a problem with
+# CORE::GLOBAL::syswrite
+@{
+    # go ahead and setup an initial file so that it can be read during the test
+    my $file = temp_file_path();
+    File::Slurp::write_file($file, '');
+
+    # step 1 will pass here, but step 2 will fail due to our simulation
+    # overriding CORE::syswrite simulates a failure in writing to a file
+    my ($res, $warn, $err) = trap_function_override_core('syswrite', \&prepend_file, $file, @{err_mode => 'quiet'@}, '');
+    ok(!$warn, 'prepend_file: write: err_mode opt quiet - no warning!');
+    ok(!$err, 'prepend_file: write: err_mode opt quiet - no exception!');
+    ok(!$res, 'prepend_file: write: err_mode opt quiet - no content!');
+    unlink "$file.$$";
+    ($res, $warn, $err) = trap_function_override_core('syswrite', \&prepend_file, $file, @{err_mode => 'carp'@}, '');
+    like($warn, qr/write_file/, 'prepend_file: write: err_mode opt carp - got warning!');
+    ok(!$err, 'prepend_file: write: err_mode opt carp - no exception!');
+    ok(!$res, 'prepend_file: write: err_mode opt carp - no content!');
+    unlink "$file.$$";
+    ($res, $warn, $err) = trap_function_override_core('syswrite', \&prepend_file, $file, @{err_mode => 'croak'@}, '');
+    ok(!$warn, 'prepend_file: write: err_mode opt croak - no warning!');
+    like($err, qr/write_file/, 'prepend_file: write: err_mode opt croak - got exception!');
+    ok(!$res, 'prepend_file: write: err_mode opt croak - no content!');
+    unlink "$file.$$";
+    # cleanup
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body--Tests}>}; see its first definition at @ref{01-error-prepend-file-t---Body--Tests}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node 01-error_prepend_file.t---Step 3 Code,  , 01-error_prepend_file.t---Step 2 Code, 01-error_prepend_file.t Test
+@subsubsection 01-error_prepend_file.t---Step 3
+
+@need 400
+@anchor{01-error-prepend-file-t---Step-3}
+@cdindex @r{<@i{01-error_prepend_file.t---Step 3}>}, definition
+@noindent
+@r{<@i{01-error_prepend_file.t---Step 3}>} @equiv{}
+@example
+# step 3: Allow steps 1 and 2 to pass, then rename the new file called "foo.$$"
+# to the original "foo". This rename will fail by simulating a problem with
+# CORE::GLOBAL::rename
+@{
+    # go ahead and setup an initial file so that it can be read during the test
+    my $file = temp_file_path();
+    File::Slurp::write_file($file, '');
+
+    # step 1 will pass here, but step 2 will fail due to our simulation
+    # overriding CORE::syswrite simulates a failure in writing to a file
+    my ($res, $warn, $err) = trap_function_override_core('rename', \&prepend_file, $file, @{err_mode => 'quiet'@}, '');
+    ok(!$warn, 'prepend_file: rename: err_mode opt quiet - no warning!');
+    ok(!$err, 'prepend_file: rename: err_mode opt quiet - no exception!');
+    ok(!$res, 'prepend_file: rename: err_mode opt quiet - no content!');
+    unlink "$file.$$";
+    ($res, $warn, $err) = trap_function_override_core('rename', \&prepend_file, $file, @{err_mode => 'carp'@}, '');
+    like($warn, qr/write_file/, 'prepend_file: rename: err_mode opt carp - got warning!');
+    ok(!$err, 'prepend_file: rename: err_mode opt carp - no exception!');
+    ok(!$res, 'prepend_file: rename: err_mode opt carp - no content!');
+    unlink "$file.$$";
+    ($res, $warn, $err) = trap_function_override_core('rename', \&prepend_file, $file, @{err_mode => 'croak'@}, '');
+    ok(!$warn, 'prepend_file: rename: err_mode opt croak - no warning!');
+    like($err, qr/write_file/, 'prepend_file: rename: err_mode opt croak - got exception!');
+    ok(!$res, 'prepend_file: rename: err_mode opt croak - no content!');
+    unlink "$file.$$";
+    # cleanup
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body--Tests}>}; see its first definition at @ref{01-error-prepend-file-t---Body--Tests}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@c .....................................
+
+@node edit_file.t Test,  , 01-error_prepend_file.t Test, About File-Slurp
+@subsection @file{edit_file.t} Test
+@cindex @file{edit_file.t} test
+
+@need 400
+@anchor{edit-file-t}
+@crindex @r{<@i{Use Strict Warnings}>}, use
+@crindex @r{<@i{Use File-Spec Basename}>}, use
+@crindex @r{<@i{Use TWJR Lib}>}, use
+@crindex @r{<@i{edit_file.t---Use}>}, use
+@crindex @r{<@i{edit_file.t---PRE}>}, use
+@crindex @r{<@i{edit_file.t---Body--Test 1}>}, use
+@crindex @r{<@i{edit_file.t---Body--Test 2}>}, use
+@crindex @r{<@i{edit_file.t---Body--Test 3}>}, use
+@crindex @r{<@i{edit_file.t---Body--Test 4}>}, use
+@crindex @r{<@i{edit_file.t---Body--Test 5}>}, use
+@cdindex @r{@{@file{edit_file.t}@}}, definition
+@noindent
+@r{@{@file{edit_file.t}@}} @equiv{}
+@example
+@r{<@i{Use Strict Warnings}>}
+@r{<@i{Use File-Spec Basename}>}
+@r{<@i{Use TWJR Lib}>}
+@r{<@i{edit_file.t---Use}>}
+
+plan tests => 20;
+
+@r{<@i{edit_file.t---PRE}>}
+
+@r{<@i{edit_file.t---Body--Test 1}>}
+@r{<@i{edit_file.t---Body--Test 2}>}
+@r{<@i{edit_file.t---Body--Test 3}>}
+@r{<@i{edit_file.t---Body--Test 4}>}
+@r{<@i{edit_file.t---Body--Test 5}>}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+The following table lists called chunk definition points.
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{Use File-Spec Basename}>} @tab See @ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use Strict Warnings}>} @tab See @ref{Use-Strict-Warnings}.
+@item @r{<@i{Use TWJR Lib}>} @tab See @ref{Use-TWJR-Lib}.
+@item @r{<@i{edit_file.t---Body--Test 1}>} @tab See @ref{edit-file-t---Body--Test-1}.
+@item @r{<@i{edit_file.t---Body--Test 2}>} @tab See @ref{edit-file-t---Body--Test-2}.
+@item @r{<@i{edit_file.t---Body--Test 3}>} @tab See @ref{edit-file-t---Body--Test-3}.
+@item @r{<@i{edit_file.t---Body--Test 4}>} @tab See @ref{edit-file-t---Body--Test-4}.
+@item @r{<@i{edit_file.t---Body--Test 5}>} @tab See @ref{edit-file-t---Body--Test-5}.
+@item @r{<@i{edit_file.t---PRE}>} @tab See @ref{edit-file-t---PRE}.
+@item @r{<@i{edit_file.t---Use}>} @tab See @ref{edit-file-t---Use}.
+@end multitable
+@iftex
+@textfonts @rm
+@end iftex
+
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks-Hook-7}
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>} +@equiv{}
+@example
+    @@printf "$@{PURPLEBOLD@}"; perl -c $@{PWD@}/files/t/edit_file.t; printf "$@{CLEAR@}"
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is also defined in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5}, and
+@ref{Makefile---Applications--Syntax-Checks-Hook-6}.
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@menu
+* edit_file.t---Use::
+* edit_file.t---PRE::
+* edit_file.t---Body--Test 1::
+@end menu
+
+@node edit_file.t---Use, edit_file.t---PRE, edit_file.t Test, edit_file.t Test
+@subsubsection edit_file.t---Use
+
+@need 400
+@anchor{edit-file-t---Use}
+@cdindex @r{<@i{edit_file.t---Use}>}, definition
+@noindent
+@r{<@i{edit_file.t---Use}>} @equiv{}
+@example
+use lib File::Spec->catdir(File::Spec->rel2abs(File::Basename::dirname(__FILE__)), 'lib');
+use FileSlurpTest qw(temp_file_path trap_function);
+
+use File::Slurp qw(read_file write_file edit_file);
+use Test::More;
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node edit_file.t---PRE, edit_file.t---Body--Test 1, edit_file.t---Use, edit_file.t Test
+@subsubsection edit_file.t---PRE
+
+@need 400
+@anchor{edit-file-t---PRE}
+@cdindex @r{<@i{edit_file.t---PRE}>}, definition
+@noindent
+@r{<@i{edit_file.t---PRE}>} @equiv{}
+@example
+my $file = 'edit_file';
+my $existing_data = <<PRE;
+Line 1
+line 2
+more
+PRE
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@c _____________________________________
+
+@node edit_file.t---Body--Test 1,  , edit_file.t---PRE, edit_file.t Test
+@subsubsection edit_file.t---Body--Test 1
+
+@heading Test 1
+
+@need 400
+@anchor{edit-file-t---Body--Test-1}
+@cdindex @r{<@i{edit_file.t---Body--Test 1}>}, definition
+@noindent
+@r{<@i{edit_file.t---Body--Test 1}>} @equiv{}
+@example
+@{
+    my $file = temp_file_path();
+    write_file($file, $existing_data);
+    my ($res, $warn, $err) = trap_function(\&edit_file, sub @{s/([0-9])/$@{1@}000/g@}, $file);
+    ok($res, 'edit_file: edit line: got response!');
+    ok(!$warn, 'edit_file: edit line: no warnings!');
+    ok(!$err, 'edit_file: edit line: no exceptions!');
+    my $expected = join("\n", ('line 1000', 'line 2000', 'more', ''));
+    is(read_file($file), $expected, 'edit_file: edit line: contents are right');
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@heading Test 2
+
+@need 400
+@anchor{edit-file-t---Body--Test-2}
+@cdindex @r{<@i{edit_file.t---Body--Test 2}>}, definition
+@noindent
+@r{<@i{edit_file.t---Body--Test 2}>} @equiv{}
+@example
+@{
+    my $file = temp_file_path();
+    write_file($file, $existing_data);
+    my ($res, $warn, $err) = trap_function(\&edit_file, sub @{s/([0-9])/$@{1@}000/g@}, $file, @{@});
+    ok($res, 'edit_file: edit line, empty options hashref: got response!');
+    ok(!$warn, 'edit_file: edit line, empty options hashref: no warnings!');
+    ok(!$err, 'edit_file: edit line, empty options hashref: no exceptions!');
+    my $expected = join("\n", ('line 1000', 'line 2000', 'more', ''));
+    is(read_file($file), $expected, 'edit_file: edit line, empty options hashref: contents are right');
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@heading Test 3
+
+@need 400
+@anchor{edit-file-t---Body--Test-3}
+@cdindex @r{<@i{edit_file.t---Body--Test 3}>}, definition
+@noindent
+@r{<@i{edit_file.t---Body--Test 3}>} @equiv{}
+@example
+@{
+    my $file = temp_file_path();
+    write_file($file, $existing_data);
+    my ($res, $warn, $err) = trap_function(\&edit_file, sub @{s/([0-9])/$@{1@}000/g@}, $file, @{foo=>1,bar=>2@});
+    ok($res, 'edit_file: edit line, invalid options: got response!');
+    ok(!$warn, 'edit_file: edit line, invalid options: no warnings!');
+    ok(!$err, 'edit_file: edit line, invalid options: no exceptions!');
+    my $expected = join("\n", ('line 1000', 'line 2000', 'more', ''));
+    is(read_file($file), $expected, 'edit_file: edit line, invalid options: contents are right');
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@heading Test 4
+
+@need 400
+@anchor{edit-file-t---Body--Test-4}
+@cdindex @r{<@i{edit_file.t---Body--Test 4}>}, definition
+@noindent
+@r{<@i{edit_file.t---Body--Test 4}>} @equiv{}
+@example
+@{
+    my $file = temp_file_path();
+    write_file($file, $existing_data);
+    my ($res, $warn, $err) = trap_function(\&edit_file, sub @{s/([0-9])/$@{1@}000/g@}, $file, @{foo=>1,bar=>2, binmode=>':raw'@});
+    ok($res, 'edit_file: edit line, invalid options, binmode: got response!');
+    # this should get fixed
+    SKIP: @{
+        skip "Binmode is bad news bears with sysread on Perl 5.30+", 1;
+        ok(!$warn, 'edit_file: edit line, invalid options, binmode: no warnings!');
+    @}
+    ok(!$err, 'edit_file: edit line, invalid options, binmode: no exceptions!');
+    my $expected = join("\n", ('line 1000', 'line 2000', 'more', ''));
+    is(read_file($file), $expected, 'edit_file: edit line, invalid options, binmode: contents are right');
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
+
+@heading Test 5
+
+@need 400
+@anchor{edit-file-t---Body--Test-5}
+@cdindex @r{<@i{edit_file.t---Body--Test 5}>}, definition
+@noindent
+@r{<@i{edit_file.t---Body--Test 5}>} @equiv{}
+@example
+@{
+    my $file = temp_file_path();
+    write_file($file, $existing_data);
+    my ($res, $warn, $err) = trap_function(\&edit_file, sub @{s/([0-9])/$@{1@}000/g@}, $file, @{foo=>1,bar=>2, err_mode=>'quiet'@});
+    ok($res, 'edit_file: edit line, invalid options, err_mode: got response!');
+    ok(!$warn, 'edit_file: edit line, invalid options, err_mode: no warnings!');
+    ok(!$err, 'edit_file: edit line, invalid options, err_mode: no exceptions!');
+    my $expected = join("\n", ('line 1000', 'line 2000', 'more', ''));
+    is(read_file($file), $expected, 'edit_file: edit line, invalid options, err_mode: contents are right');
+    unlink $file;
+@}
+
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@iftex
+@textfonts @rm
+@end iftex
 
 
 
@@ -3259,6 +5004,7 @@ The Applications Hook
 @crindex @r{<@i{Makefile---TWJR Targets}>}, use
 @crindex @r{<@i{Makefile---Clean Targets}>}, use
 @crindex @r{<@i{Makefile---Applications}>}, use
+@crindex @r{<@i{Makefile---Applications--Syntax Checks}>}, use
 @cdindex @r{@{@file{Makefile}@}}, definition
 @noindent
 @r{@{@file{Makefile}@}} @equiv{}
@@ -3271,6 +5017,7 @@ The Applications Hook
 @r{<@i{Makefile---TWJR Targets}>}
 @r{<@i{Makefile---Clean Targets}>}
 @r{<@i{Makefile---Applications}>}
+@r{<@i{Makefile---Applications--Syntax Checks}>}
 
 @end example
 @iftex
@@ -3282,6 +5029,7 @@ The following table lists called chunk definition points.
 @multitable @columnfractions .35 .65
 @headitem Chunk name @tab First definition point
 @item @r{<@i{Makefile---Applications}>} @tab See @ref{Makefile---Applications}.
+@item @r{<@i{Makefile---Applications--Syntax Checks}>} @tab See @ref{Makefile---Applications--Syntax-Checks}.
 @item @r{<@i{Makefile---Clean Targets}>} @tab See @ref{Makefile---Clean-Targets}.
 @item @r{<@i{Makefile---Default Target}>} @tab See @ref{Makefile---Default-Target}.
 @item @r{<@i{Makefile---TWJR Targets}>} @tab See @ref{Makefile---TWJR-Targets-1}.
@@ -3302,6 +5050,7 @@ The following table lists called chunk definition points.
 * Makefile TWJR Targets::
 * Makefile Clean Targets::
 * Makefile Applications::
+* Makefile Syntax Checks::
 @end menu
 
 @node Makefile Variable Definitions, Makefile Default Target, The Makefile, The Makefile
@@ -3429,7 +5178,7 @@ which  is  directly  responsible  for  producing  the  output  files.   If  the
 ################
 .PHONY : TWJR JRTANGLE TANGLE JRWEAVE WEAVE TEXI INFO PDF HTML
 .PHONY : default twjr twjrkeep jrtangle tangle
-.PHONY : jrweave weave texi info pdf html newmakefile
+.PHONY : jrweave weave texi info pdf html newmakefile syntax-checks
 
 default : TWJR
 
@@ -3519,7 +5268,7 @@ twjr : twjrkeep dirclean
 JRTANGLE : TANGLE
 TANGLE   : jrtangle
 jrtangle : tangle
-tangle   : files $(LODESTONE)
+tangle   : files $(LODESTONE) syntax-checks
 
 @end example
 @iftex
@@ -3784,7 +5533,7 @@ This chunk is called by @r{@{@file{Makefile}@}}; see its first definition at @re
 
 @c -----------------------------------------------------------------------------
 
-@node Makefile Applications,  , Makefile Clean Targets, The Makefile
+@node Makefile Applications, Makefile Syntax Checks, Makefile Clean Targets, The Makefile
 @appendixsec Makefile Applications
 @cindex Makefile applications
 
@@ -3821,6 +5570,46 @@ The called chunk @r{<@i{Makefile---Applications--Hook}>} is first defined at
 @end iftex
 
 
+
+
+@c -----------------------------------------------------------------------------
+
+@node Makefile Syntax Checks,  , Makefile Applications, The Makefile
+@appendixsec Makefile Syntax Checks
+@cindex Makefile syntax checks
+
+@need 400
+@anchor{Makefile---Applications--Syntax-Checks}
+@crindex @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}, use
+@cdindex @r{<@i{Makefile---Applications--Syntax Checks}>}, definition
+@noindent
+@r{<@i{Makefile---Applications--Syntax Checks}>} @equiv{}
+@example
+# APPLICATION SYNTAX CHECKS
+###########################
+
+
+syntax-checks :
+    @@printf "$@{YELLOW@}checking syntax of installed Perl files...$@{PURPLEBOLD@}\n";
+@r{<@i{Makefile---Applications--Syntax Checks-Hook}>}
+@end example
+@iftex
+@smallfonts @rm
+@end iftex
+
+@noindent
+This chunk is called by @r{@{@file{Makefile}@}}; see its first definition at @ref{Makefile}.
+
+@noindent
+The called chunk @r{<@i{Makefile---Applications--Syntax Checks-Hook}>} is first defined at
+@ref{Makefile---Applications--Syntax-Checks-Hook-1}.
+@iftex
+@textfonts @rm
+@end iftex
+
+
+
+
 @c END The Makefile
 @c /////////////////////////////////////////////////////////////////////////////
 
@@ -3855,9 +5644,27 @@ and the code chunk references.
 @appendixsec Source File Definitions
 
 @table @asis
+@item @r{@{@file{00-report-prereqs.dd}@}}
+This chunk is defined in
+@ref{00-report-prereqs-dd}.
+@item @r{@{@file{00-report-prereqs.t}@}}
+This chunk is defined in
+@ref{00-report-prereqs-t}.
+@item @r{@{@file{01-error_edit_file.t}@}}
+This chunk is defined in
+@ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}}
+This chunk is defined in
+@ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}}
+This chunk is defined in
+@ref{01-error-prepend-file-t}.
 @item @r{@{@file{FileSlurpTest.pm}@}}
 This chunk is defined in
 @ref{FileSlurpTest-pm}.
+@item @r{@{@file{FileSlurpTestOverride.pm}@}}
+This chunk is defined in
+@ref{FileSlurpTestOverride-pm}.
 @item @r{@{@file{Makefile}@}}
 This chunk is defined in
 @ref{Makefile}.
@@ -3867,6 +5674,9 @@ This chunk is defined in
 @item @r{@{@file{Slurp.pm}@}}
 This chunk is defined in
 @ref{Slurp-pm}.
+@item @r{@{@file{edit_file.t}@}}
+This chunk is defined in
+@ref{edit-file-t}.
 @item @r{@{@file{perlbrew-install.pl}@}}
 This chunk is defined in
 @ref{perlbrew-install-pl}.
@@ -3880,12 +5690,71 @@ This chunk is defined in
 @appendixsec Code Chunk Definitions
 
 @table @asis
+@item @r{<@i{00-report-prereqs.dd--Body}>}
+This chunk is defined in
+@ref{00-report-prereqs-dd--Body}.
+@item @r{<@i{00-report-prereqs.t---Body}>}
+This chunk is defined in
+@ref{00-report-prereqs-t---Body}.
+@item @r{<@i{01-error_edit_file.t---Body}>}
+This chunk is defined in
+@ref{01-error-edit-file-t---Body}.
+@item @r{<@i{01-error_edit_file.t---Body--# of Error}>}
+This chunk is defined in
+@ref{01-error-edit-file-t---Body----of-Error}.
+@item @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}
+This chunk is defined in
+@ref{01-error-edit-file-t---Body--Edit-File-Error}.
+@item @r{<@i{01-error_edit_file.t---Body--Plan Tests}>}
+This chunk is defined in
+@ref{01-error-edit-file-t---Body--Plan-Tests}.
+@item @r{<@i{01-error_edit_file.t---Body--Use}>}
+This chunk is defined in
+@ref{01-error-edit-file-t---Body--Use}.
+@item @r{<@i{01-error_prepend_file.t---Body}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Body}.
+@item @r{<@i{01-error_prepend_file.t---Body--Test-More}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Body--Test-More}.
+@item @r{<@i{01-error_prepend_file.t---Body--Tests}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Body--Tests}.
+@item @r{<@i{01-error_prepend_file.t---Body--Use}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Body--Use}.
+@item @r{<@i{01-error_prepend_file.t---Body--Warnings Off}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Body--Warnings-Off}.
+@item @r{<@i{01-error_prepend_file.t---Step 1}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Step-1}.
+@item @r{<@i{01-error_prepend_file.t---Step 2}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Step-2}.
+@item @r{<@i{01-error_prepend_file.t---Step 3}>}
+This chunk is defined in
+@ref{01-error-prepend-file-t---Step-3}.
 @item @r{<@i{Makefile---Applications}>}
 This chunk is defined in
 @ref{Makefile---Applications}.
 @item @r{<@i{Makefile---Applications--Hook}>}
 This chunk is defined in
 @ref{Makefile---Applications--Hook}.
+@item @r{<@i{Makefile---Applications--Syntax Checks}>}
+This chunk is defined in
+@ref{Makefile---Applications--Syntax-Checks}.
+@item @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}
+Multiple definitions occur in
+@ref{Makefile---Applications--Syntax-Checks-Hook-1},
+@ref{Makefile---Applications--Syntax-Checks-Hook-2},
+@ref{Makefile---Applications--Syntax-Checks-Hook-3},
+@ref{Makefile---Applications--Syntax-Checks-Hook-4},
+@ref{Makefile---Applications--Syntax-Checks-Hook-5},
+@ref{Makefile---Applications--Syntax-Checks-Hook-6},
+and
+@ref{Makefile---Applications--Syntax-Checks-Hook-7}.
+
 @item @r{<@i{Makefile---Clean Targets}>}
 This chunk is defined in
 @ref{Makefile---Clean-Targets}.
@@ -3910,6 +5779,36 @@ This chunk is defined in
 @item @r{<@i{Test---FileSlurp--FileSlurpTest}>}
 This chunk is defined in
 @ref{Test---FileSlurp--FileSlurpTest}.
+@item @r{<@i{Use File-Spec Basename}>}
+This chunk is defined in
+@ref{Use-File-Spec-Basename}.
+@item @r{<@i{Use Strict Warnings}>}
+This chunk is defined in
+@ref{Use-Strict-Warnings}.
+@item @r{<@i{Use TWJR Lib}>}
+This chunk is defined in
+@ref{Use-TWJR-Lib}.
+@item @r{<@i{edit_file.t---Body--Test 1}>}
+This chunk is defined in
+@ref{edit-file-t---Body--Test-1}.
+@item @r{<@i{edit_file.t---Body--Test 2}>}
+This chunk is defined in
+@ref{edit-file-t---Body--Test-2}.
+@item @r{<@i{edit_file.t---Body--Test 3}>}
+This chunk is defined in
+@ref{edit-file-t---Body--Test-3}.
+@item @r{<@i{edit_file.t---Body--Test 4}>}
+This chunk is defined in
+@ref{edit-file-t---Body--Test-4}.
+@item @r{<@i{edit_file.t---Body--Test 5}>}
+This chunk is defined in
+@ref{edit-file-t---Body--Test-5}.
+@item @r{<@i{edit_file.t---PRE}>}
+This chunk is defined in
+@ref{edit-file-t---PRE}.
+@item @r{<@i{edit_file.t---Use}>}
+This chunk is defined in
+@ref{edit-file-t---Use}.
 @end table
 
 
@@ -3920,6 +5819,90 @@ This chunk is defined in
 @appendixsec Code Chunk References
 
 @table @asis
+@item @r{<@i{00-report-prereqs.dd--Body}>}
+
+@noindent
+This chunk is called by @r{@{@file{00-report-prereqs.dd}@}}; see its first definition at @ref{00-report-prereqs-dd}.
+@item @r{<@i{00-report-prereqs.t---Body}>}
+
+@noindent
+This chunk is called by @r{@{@file{00-report-prereqs.t}@}}; see its first definition at @ref{00-report-prereqs-t}.
+@item @r{<@i{01-error_edit_file.t---Body}>}
+
+@noindent
+This chunk is called by @r{@{@file{01-error_edit_file.t}@}}; see its first definition at @ref{01-error-edit-file-t}.
+@item @r{<@i{01-error_edit_file.t---Body--# of Error}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@item @r{<@i{01-error_edit_file.t---Body--Edit File Error}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@item @r{<@i{01-error_edit_file.t---Body--Plan Tests}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@item @r{<@i{01-error_edit_file.t---Body--Use}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{01-error_edit_file.t---Body}>} @tab See @ref{01-error-edit-file-t---Body}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@end multitable
+@item @r{<@i{01-error_prepend_file.t---Body}>}
+
+@noindent
+This chunk is called by @r{@{@file{01-error_prepend_file.t}@}}; see its first definition at @ref{01-error-prepend-file-t}.
+@item @r{<@i{01-error_prepend_file.t---Body--Test-More}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@item @r{<@i{01-error_prepend_file.t---Body--Tests}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@item @r{<@i{01-error_prepend_file.t---Body--Use}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@item @r{<@i{01-error_prepend_file.t---Body--Warnings Off}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body}>}; see its first definition at @ref{01-error-prepend-file-t---Body}.
+@item @r{<@i{01-error_prepend_file.t---Step 1}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body--Tests}>}; see its first definition at @ref{01-error-prepend-file-t---Body--Tests}.
+@item @r{<@i{01-error_prepend_file.t---Step 2}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body--Tests}>}; see its first definition at @ref{01-error-prepend-file-t---Body--Tests}.
+@item @r{<@i{01-error_prepend_file.t---Step 3}>}
+
+@noindent
+This chunk is called by @r{<@i{01-error_prepend_file.t---Body--Tests}>}; see its first definition at @ref{01-error-prepend-file-t---Body--Tests}.
 @item @r{<@i{Makefile---Applications}>}
 
 @noindent
@@ -3928,6 +5911,14 @@ This chunk is called by @r{@{@file{Makefile}@}}; see its first definition at @re
 
 @noindent
 This chunk is called by @r{<@i{Makefile---Applications}>}; see its first definition at @ref{Makefile---Applications}.
+@item @r{<@i{Makefile---Applications--Syntax Checks}>}
+
+@noindent
+This chunk is called by @r{@{@file{Makefile}@}}; see its first definition at @ref{Makefile}.
+@item @r{<@i{Makefile---Applications--Syntax Checks-Hook}>}
+
+@noindent
+This chunk is called by @r{<@i{Makefile---Applications--Syntax Checks}>}; see its first definition at @ref{Makefile---Applications--Syntax-Checks}.
 @item @r{<@i{Makefile---Clean Targets}>}
 
 @noindent
@@ -3956,6 +5947,77 @@ This chunk is called by @r{@{@file{Slurp.pm}@}}; see its first definition at @re
 
 @noindent
 This chunk is called by @r{@{@file{FileSlurpTest.pm}@}}; see its first definition at @ref{FileSlurpTest-pm}.
+@item @r{<@i{Use File-Spec Basename}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{@{@file{01-error_edit_file.t}@}} @tab See @ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}} @tab See @ref{01-error-prepend-file-t}.
+@item @r{@{@file{FileSlurpTest.pm}@}} @tab See @ref{FileSlurpTest-pm}.
+@item @r{@{@file{Slurp.pm}@}} @tab See @ref{Slurp-pm}.
+@item @r{@{@file{edit_file.t}@}} @tab See @ref{edit-file-t}.
+@end multitable
+@item @r{<@i{Use Strict Warnings}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{<@i{00-report-prereqs.t---Body}>} @tab See @ref{00-report-prereqs-t---Body}.
+@item @r{@{@file{01-error_edit_file.t}@}} @tab See @ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}} @tab See @ref{01-error-prepend-file-t}.
+@item @r{<@i{Package---File--Slurp-Code}>} @tab See @ref{Package---File--Slurp-Code}.
+@item @r{<@i{Test---FileSlurp--FileSlurpTest}>} @tab See @ref{Test---FileSlurp--FileSlurpTest}.
+@item @r{@{@file{edit_file.t}@}} @tab See @ref{edit-file-t}.
+@end multitable
+@item @r{<@i{Use TWJR Lib}>}
+
+@noindent
+This chunk is called by the following chunks:
+
+@multitable @columnfractions .35 .65
+@headitem Chunk name @tab First definition point
+@item @r{@{@file{01-error_edit_file.t}@}} @tab See @ref{01-error-edit-file-t}.
+@item @r{@{@file{01-error_edit_file_lines.t}@}} @tab See @ref{01-error-edit-file-lines-t}.
+@item @r{@{@file{01-error_prepend_file.t}@}} @tab See @ref{01-error-prepend-file-t}.
+@item @r{@{@file{FileSlurpTest.pm}@}} @tab See @ref{FileSlurpTest-pm}.
+@item @r{@{@file{Slurp.pm}@}} @tab See @ref{Slurp-pm}.
+@item @r{@{@file{edit_file.t}@}} @tab See @ref{edit-file-t}.
+@end multitable
+@item @r{<@i{edit_file.t---Body--Test 1}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@item @r{<@i{edit_file.t---Body--Test 2}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@item @r{<@i{edit_file.t---Body--Test 3}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@item @r{<@i{edit_file.t---Body--Test 4}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@item @r{<@i{edit_file.t---Body--Test 5}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@item @r{<@i{edit_file.t---PRE}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
+@item @r{<@i{edit_file.t---Use}>}
+
+@noindent
+This chunk is called by @r{@{@file{edit_file.t}@}}; see its first definition at @ref{edit-file-t}.
 @end table
 
 
