@@ -1,8 +1,8 @@
 \input texinfo   @c -*- mode: texinfo -*-
 
 @c FILE    Perl5.twjr
-@c VERSION 0.2.1
-@c DATE    2018-11-13T17:40
+@c VERSION 0.2.2
+@c DATE    2018-11-14T11:00
 @c AUTHOR  wlharvey4
 
 @c *****************************************************************************
@@ -984,7 +984,7 @@ rm ./$LOCALINSTALLER
 @item Managing Multiple Perl 5 Installations with Perlbrew (BSD Magazine, Volume 12, n. 1, issue 01/2018)
 @url{https://bsdmag.org/download/build-scalable-monitoring-system-grafana-influxdb-riemann/}
 
-@xref{Multiple Perl 5 Installations}
+@xref{Multiple Perl 5 Installations}.
 
 @cindex deploying perl bindings
 @cindex Homebrew
@@ -1329,6 +1329,9 @@ overtime.
 
 
 
+
+
+
 @c *****************************************************************************
 @c                            CHAPTER: Packages
 
@@ -1341,7 +1344,465 @@ overtime.
 @
 
 
+
+
 @c -----------------------------------------------------------------------------
+@c                          SECTION: Local::Lib
+
+@node Local-Lib
+@section @file{Local::Lib}
+@cindex @file{local::lib}
+
+@heading Current Version
+@file{local::lib}-2.000024 OCT 08, 2017
+
+@heading About
+Create and use a local @file{lib/} for perl modules with @env{PERL5LIB}.
+
+@heading Where
+@itemize
+@item
+@url{https://metacpan.org/pod/local::lib#NAME, MetaCPAN}
+
+@item
+@url{https://github.com/Perl-Toolchain-Gang/local-lib, Github}
+@end itemize
+
+@heading Rationale
+The version  of a Perl package  on your machine  is not always the  version you
+need. Obviously,  the best thing to  do would be  to update to the  version you
+need. However,  you might be in  a situation where you're  prevented from doing
+this. Perhaps  you don't have  system administrator privileges; or  perhaps you
+are using a package management system such as Debian, and nobody has yet gotten
+around to packaging up the version you need.
+
+@file{local::lib}  solves this  problem  by  allowing you  to  create your  own
+directory of Perl  packages downloaded from CPAN (in a  multi-user system, this
+would typically be  within your own home directory).  The  existing system Perl
+installation is  not affected; you simply  invoke Perl with special  options so
+that Perl uses the packages in your own local package directory rather than the
+system  packages.  @file{local::lib}  arranges  things  so  that  your  locally
+installed  version  of the  Perl  packages  takes  precedence over  the  system
+installation.
+
+If you are using  a package management system (such as  Debian), you don't need
+to  worry about  Debian and  CPAN  stepping on  each other's  toes. Your  local
+version of the packages will be  written to an entirely separate directory from
+those installed by Debian.
+
+
+@c .....................................
+
+@node Description
+@subsection Description
+@cindex @file{local::lib} description
+
+This module provides a quick, convenient way of bootstrapping a user-local Perl
+module library located within the user's home directory. It also constructs and
+prints out  for the  user the  list of environment  variables using  the syntax
+appropriate for the user's current shell (as specified by the SHELL environment
+variable), suitable for directly adding to one's shell configuration file.
+
+More generally, @file{local::lib}  allows for the bootstrapping and  usage of a
+directory containing Perl modules outside of Perl's @code{@@INC}. This makes it
+easier to ship  an application with an  app-specific copy of a  Perl module, or
+collection of modules. Useful in cases  like when an upstream maintainer hasn't
+applied a patch to a module of theirs that you need for your application.
+
+@cindex @file{local::lib} environment variables
+@heading Environment Variables Set by @file{local::lib}
+@itemize
+@item
+PERL_MB_OPT
+
+@item
+PERL_MM_OPT
+
+@item
+PERL5LIB
+
+@item
+PATH
+
+@item
+PERL_LOCAL_LIB_ROOT
+@end itemize
+
+When  possible, these  will be  appended  to instead  of overwritten  entirely.
+These values are then available for reference by any code after import.
+
+
+@c .....................................
+
+@node Import Options
+@subsection @file{local::lib} Import Options
+@cindex @file{local::lib} import options
+
+Options are values  that can be passed to the  @file{local::lib} import besides
+the directory to use.  They  are specified as use @samp{local::lib '--option'[,
+path];} or @samp{perl -Mlocal::lib=--option[,path]}.
+
+@table @option
+
+@item --deactivate
+Remove the chosen path (or the default path) from the module search paths if it
+was added by @file{local::lib}, instead of adding it.
+
+@item --deactivate-all
+Remove all  directories that  were added to  search paths  by @file{local::lib}
+from the search paths.
+
+@item --shelltype
+Specify  the shell  type to  use for  output.  By  default, the  shell will  be
+detected  based  on   the  environment.   Should  be   one  of:  @file{bourne},
+@file{csh}, @file{cmd}, or @file{powershell}.
+
+@item --no-create
+Prevents  @file{local::lib} from  creating  directories  when activating  dirs.
+This is likely to cause issues on Win32 systems.
+
+@end table
+
+
+@c .....................................
+
+@node Local-Lib Class Description
+@subsection @file{local::lib} Class Description
+@cindex @file{local::lib} class description
+
+@c _____________________________________
+
+@node Class Methods
+@subsubsection Class Methods
+
+@c _____________________________________
+
+@node Object Interface
+@subsubsection Object Interface
+@cindex object interface
+
+@c _____________________________________
+
+@node Attributes
+@subsubsection Attributes
+@cindex @file{local::lib} attributes
+
+@c _____________________________________
+
+@node Object Methods
+@subsubsection Object Methods
+@cindex @file{local::lib} object methods
+
+
+@c .....................................
+
+@node Install local-lib
+@subsection Install @file{local::lib}
+@cindex @file{local::lib} installation
+
+@heading Bootstrapping @file{local::lib}
+A  typical way  to install  @file{local::lib}  is using  what is  known as  the
+@dfn{bootstrapping} technique. You  would do this if  your system administrator
+hasn't  already  installed @file{local::lib}.  In  this  case, you'll  need  to
+install @file{local::lib} in your home directory.
+
+Even if you  do have administrative privileges,  you will still want  to set up
+your environment  variables, as discussed  in step  4. Without this,  you would
+still install the modules into the  system CPAN installation and also your Perl
+scripts   will   not  use   the   @file{lib/}   path  you   bootstrapped   with
+@file{local::lib}.
+
+@cindex @file{local::lib} default install location
+@subheading Default Install Location
+By  default  @file{local::lib}  installs  itself  and  the  CPAN  modules  into
+@file{~/perl5}.
+
+@enumerate
+@cindex @file{local::lib} tarball
+@item
+Download @file{local::lib} tarball
+
+Download  and  unpack  the  @file{local::lib} tarball  from  CPAN  (search  for
+@samp{Download}  on the  CPAN  page  about @file{local::lib}).  Do  this as  an
+ordinary user,  not as  root or  administrator.  Unpack the  file in  your home
+directory or in any other convenient location.
+
+@cindex @option{--bootstrap} option of @file{local::lib}
+@cindex @file{local::lib} @option{--bootstrap} option
+@cindex @file{Makefile.PL}
+@item
+Run @file{Makefile.PL} with the @option{--bootstrap} option
+
+@example
+$ perl Makefile.PL --bootstrap
+@end example
+
+If the  system asks you  whether it should  automatically configure as  much as
+possible, you would typically answer yes.
+
+In order to install @file{local::lib} into  a directory other than the default,
+you need  to specify  the name  of the  directory when  you call  bootstrap, as
+follows:
+
+@example
+$ perl Makefile.PL --bootstrap=~/foo
+@end example
+
+@item
+Run @command{make}
+
+Run this: (@file{local::lib} assumes you have make installed on your system)
+
+@example
+$ make test && make install
+@end example
+
+@item
+Setup environment variables
+
+Now we need to setup the appropriate environment variables, so that Perl starts
+using our newly  generated @file{lib/} directory. If you are  using bash or any
+other Bourne shells, you can add this to your shell startup script this way:
+
+@example
+$ echo 'eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"' \
+    >>~/.bashrc
+@end example
+
+If you  passed to bootstrap  a directory other than  default, you also  need to
+give that as import parameter to  the call of the @file{local::lib} module like
+this way:
+
+@example
+$ echo 'eval "$(perl -I$HOME/foo/lib/perl5 -Mlocal::lib=$HOME/foo)"' \
+    >>~/.bashrc
+@end example
+
+After writing your shell  configuration file, be sure to re-read  it to get the
+changed  settings into  your  current shell's  environment.  Bourne shells  use
+@command{. ~/.bashrc} for this.
+
+@end enumerate
+
+
+@c .....................................
+
+@node Advanced Configuration
+@subsection Advanced Configuration
+@cindex @file{local::lib} advanced configuration
+
+@heading Multiple Installations
+To avoid  doing several bootstrap for  several Perl module environments  on the
+same  account,  for example  if  you  use  it  for several  different  deployed
+applications  independently, you  can  use  one bootstrapped  @file{local::lib}
+installation to install modules in different directories directly this way:
+
+@example
+cd ~/mydir1
+perl -Mlocal::lib=./
+eval $(perl -Mlocal::lib=./)  ### To set the environment for this shell alone
+printenv                      ### You will see that ~/mydir1 is in the PERL5LIB
+perl -MCPAN -e install ...    ### whatever modules you want
+cd ../mydir2
+... REPEAT ...
+@end example
+
+@subheading Protecting the Shell Environment
+
+If you  use @file{.bashrc} to  activate a @file{local::lib}  automatically, the
+@file{local::lib}  will  be  re-enabled  in  any  sub-shells  used,  overriding
+adjustments you  may have  made in  the parent  shell. To  avoid this,  you can
+initialize   the   @file{local::lib}   in  @file{.bash_profile}   rather   than
+@file{.bashrc}, or protect the @file{local::lib} invocation with a @env{$SHLVL}
+check:
+
+@example
+[ $SHLVL -eq 1 ] && eval "$(perl -I$HOME/perl5/lib/perl5 -Mlocal::lib)"
+@end example
+
+@subheading Deactivating a @file{local::lib}
+If you are working with several @file{local::lib} environments, you may want to
+remove  some  of them  from  the  current  environment without  disturbing  the
+others. You can deactivate one environment like this (using @code{bourne sh}):
+
+@example
+eval $(perl -Mlocal::lib=--deactivate,~/path)
+@end example
+
+@noindent
+which will  generate and run the  commands needed to remove  @file{~/path} from
+your various  search paths. Whichever  environment was activated  most recently
+will remain  the target  for module  installations.  That  is, if  you activate
+@file{~/path_A} and then you activate  @file{~/path_B}, new modules you install
+will go  in @file{~/path_B}.   If you  deactivate @file{~/path_B}  then modules
+will be installed into @file{~/pathA}  -- but if you deactivate @file{~/path_A}
+then they will still be installed in @file{~/pathB} because pathB was activated
+later.
+
+@cindex @file{local::lib} deactivate
+@subheading Deactivate All @file{local::lib}'s
+You  can also  ask  @file{local::lib} to  clean itself  completely  out of  the
+current  shell's environment  with the  @option{--deactivate-all} option.   For
+multiple environments  for multiple  apps you  may need  to include  a modified
+version of  the use  @file{FindBin} instructions in  the @samp{In  code} sample
+above.  If you did something like the above,  you have a set of Perl modules at
+@file{~/mydir1/lib}.       If       you       have      a       script       at
+@file{~/mydir1/scripts/myscript.pl},  you need  to tell  it where  to find  the
+modules you installed for it at @file{~/mydir1/lib}.
+
+In @file{~/mydir1/scripts/myscript.pl}:
+
+@example
+use strict;
+use warnings;
+use local::lib "$FindBin::Bin/..";  ### points to ~/mydir1 and local::lib finds lib
+use lib "$FindBin::Bin/../lib";     ### points to ~/mydir1/lib
+@end example
+
+Put this before any @samp{BEGIN @{  @dots{} @}} blocks that require the modules
+you installed.
+
+
+@c .....................................
+
+@node Caution and Limitations
+@subsection Caution About @code{UNINST=1} and Limitations
+@cindex @file{local::lib} caution re @code{UNINST=1}
+@cindex @file{local::lib} limitations
+
+@heading @code{UNINST=1}
+Be careful about using @file{local::lib} in combination with @samp{make install
+UNINST=1}. The idea of this feature is  that will uninstall an old version of a
+module before installing  a new one. However  it lacks a safety  check that the
+old  version and  the  new version  will  go  in the  same  directory. Used  in
+combination  with  @file{local::lib}, you  can  potentially  delete a  globally
+accessible version  of a  module while  installing the new  version in  a local
+place. Only combine  @samp{make install UNINST=1} and  @file{local::lib} if you
+understand these possible consequences.
+
+@heading Limitations
+@cindex limitations
+@itemize
+
+@item
+Directory  names  with spaces  in  them  are not  well  supported  by the  perl
+toolchain  and the  programs it  uses. Pure-perl  distributions should  support
+spaces, but  problems are more  likely with  dists that require  compilation. A
+workaround you  can do  is moving  your @file{local::lib}  to a  directory with
+spaces  after   you  installed   all  modules  inside   your  @file{local::lib}
+bootstrap. But be aware that you can't update or install CPAN modules after the
+move.
+
+@item
+Rather  basic shell  detection. Right  now  anything with  csh in  its name  is
+assumed to be a C shell or something compatible, and everything else is assumed
+to be Bourne, except on Win32 systems. If the SHELL environment variable is not
+set, a Bourne-compatible shell is assumed.
+
+@item
+Kills any existing @env{PERL_MM_OPT} or @env{PERL_MB_OPT}.
+
+@item
+Should probably auto-fixup CPAN config if not already done.
+
+@item
+On VMS and MacOS Classic  (pre-OS X), @file{local::lib} loads File::Spec.  This
+means any @file{File::Spec} version installed  in the @file{local::lib} will be
+ignored by scripts using @file{local::lib}.  A workaround for this is using use
+@samp{lib "$local_lib/lib/perl5";} instead of using @file{local::lib} directly.
+
+@item
+Conflicts    with    @file{ExtUtils::MakeMaker}'s    @option{PREFIX}    option.
+@file{local::lib}  uses  the  @option{INSTALL_BASE}  option,  as  it  has  more
+predictable   and  sane   behavior.    If  something   attempts   to  use   the
+@option{PREFIX}     option      when     running      a     @file{Makefile.PL},
+@file{ExtUtils::MakeMaker}   will   refuse  to   run,   as   the  two   options
+conflict.   This  can   be   worked  around   by   temporarily  unsetting   the
+@env{PERL_MM_OPT} environment variable.
+
+@item
+Conflicts with @file{Module::Build}'s @option{--prefix} option.  Similar to the
+previous  limitation,  but  any  @option{--prefix}  option  specified  will  be
+ignored.   This   can  be   worked   around   by  temporarily   unsetting   the
+@env{PERL_MB_OPT} environment variable.
+@end itemize
+
+
+
+@c .....................................
+
+@node local-lib From the Alpaca
+@subsection @file{local::lib} From the Alpaca
+@cindex @file{local::lib} from Alpaca
+
+@cindex Alpaca book
+@cindex @cite{Learning Perl}
+From the Alpaca Book @mybibcite{Book:Alpaca}
+
+@heading Using Your Own Directories To Install Modules
+Keep  additional   Perl  modules   in  your  own   directories  by   using  the
+@file{local::lib} module.  It doesn't come with Perl5 so it must be downloaded
+from an archive.
+
+@subheading What @file{local::lib} Does
+This  module sets  the various  environment  variables that  affect where  CPAN
+clients install modules.  You can see these environment variables and what they
+will be set to using the command:
+
+@example
+$ perl -Mlocal::lib
+@print{} export PERL_LOCAL_LIB_ROOT="@dots{}";
+@dots{}
+@end example
+
+@subheading @file{cpan} Client
+The @file{cpan} client supports this if you use the @option{-I} switch when
+installing modules:
+
+@example
+$ cpan -I <Some-Module>
+@end example
+
+@subheading @file{cpanm} Tool
+The @file{cpanm}  tool goes  a little  farther.  If you've  already set  up the
+environment variables that  @file{local::lib} would set for you,  it uses them.
+If not, it checks the default module directories for write permissions.  If you
+don't have write permissions, it  automatically uses @file{local::lib} for you.
+You can  also use @file{local::lib} explicitly  by including it in  the call to
+@file{cpanm}:
+
+@example
+$ cpanm --local-lib <Some-Module>
+@end example
+
+@subheading Finding Your Modules
+Once you've set up a directory in which to keep your Perl modules, you have to
+tell your programs where to find them.  If you are using @file{local::lib}, you
+just @command{use} the @file{local::lib} module in your program.
+
+@example
+# inside your Perl program
+use local::lib
+@end example
+
+If you installed them in some other location, you can use the @file{lib} pragma
+with a list of additional module directories.
+
+@example
+# inside your Perl program
+use lib qw(/path/to/modules);
+@end example
+
+@subheading Additional Information
+@xref{perlfaq8, Perl FAQ 8}.
+
+
+
+
+
+
+@c -----------------------------------------------------------------------------
+@c                         SECTION:Common Perl Code
 
 @node Common Perl Code
 @section Common Perl Code
@@ -3462,7 +3923,7 @@ use File::Slurp qw(ef edit_file);
 @c _____________________________________
 
 @node 01-error_prepend_file.t---Body--Use Code
-@subsubsection 01-error_prepend_file.t---Body--Use Code
+@subsubsection i01-error_prepend_file.t---Body--Use Code
 
 @<01-error_prepend_file.t---Body--Use@>=
 use lib File::Spec->catdir(File::Spec->rel2abs(File::Basename::dirname(__FILE__)), 'lib');
@@ -3785,6 +4246,69 @@ PRE
 
 @c END CHAPTER: About Packages
 @c /////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+@c *****************************************************************************
+@c                             CHAPTER: FAQ
+
+@node The FAQs
+@chapter The FAQs
+@cindex faqs
+
+@url{https://perldoc.perl.org/index-faq.html, FAQs}
+
+@itemize
+
+@item
+@url{https://perldoc.perl.org/perlfaq.html,   perlfaq    -   frequently   asked
+questions about Perl}
+
+@item
+@url{https://perldoc.perl.org/perlfaq1.html, perlfaq1 - General Questions About
+Perl}
+
+@item
+@url{https://perldoc.perl.org/perlfaq2.html, perlfaq2 -  Obtaining and Learning
+about Perl}
+
+@item
+@url{https://perldoc.perl.org/perlfaq3.html, perlfaq3 - Programming Tools}
+
+@item
+@url{https://perldoc.perl.org/perlfaq4.html, perlfaq4 - Data Manipulation}
+
+@item
+@url{https://perldoc.perl.org/perlfaq5.html, perlfaq5 - Files and Formats}
+
+@item
+@url{https://perldoc.perl.org/perlfaq6.html, perlfaq6 - Regular Expressions}
+
+@item
+@url{https://perldoc.perl.org/perlfaq7.html, perlfaq7  - General  Perl Language
+Issues}
+
+@anchor{perlfaq8}
+@item
+@url{https://perldoc.perl.org/perlfaq8.html, perlfaq8 - System Interaction}
+
+@item
+@url{https://perldoc.perl.org/perlfaq9.html,   perlfaq9   -  Web,   Email   and
+Networking}
+
+@item
+@url{https://perldoc.perl.org/perlunifaq.html, perlunifaq - Perl Unicode FAQ}
+
+@end itemize
+
+
+
+
+
+
 
 
 @c END CHAPTERS
@@ -4428,7 +4952,7 @@ and the code chunk references.
 @node Bibliography
 @unnumbered Bibliography
 
-@c @table @asis
+@table @asis
 
 @c @mybibitem{LitProg:Home}
 @c "On Misreadings", email, January 2009 @url{http://www.literateprogramming.com/}
@@ -4440,7 +4964,10 @@ and the code chunk references.
 @c @mybibitem{LitProg:Ramsey}
 @c @url{ahttps://www.cs.tufts.edu/~nr/noweb/}
 
-@c @end table
+@mybibitem{Book:Alpaca}
+@cite{Learning Perl} by Randall Schwartz (6th Ed. 2011)
+
+@end table
 
 
 @c END Bibliography
